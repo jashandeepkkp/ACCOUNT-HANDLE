@@ -96,3 +96,22 @@
 .notification-main time{font-size:10px;color:var(--muted)}
 .notification-note{margin-top:13px;padding:10px;border-radius:5px;background:var(--bg);color:var(--muted);font-size:10px;line-height:1.5}
 @media(max-width:600px){.notification-history{padding:14px 12px}.notification-heading{flex-direction:column}.notification-row{gap:9px}.notification-status{min-width:65px}}
+
+
+/* Portfolio overview */
+.portfolio-overview{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:20px;margin-bottom:16px}
+.portfolio-overview-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:18px}
+.portfolio-overview-head h2{font-size:20px;margin:5px 0}
+.portfolio-overview-head p{font-size:11px;color:var(--muted);margin:0}
+.portfolio-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.portfolio-metric{padding:16px;border:1px solid var(--line);border-radius:7px;background:var(--bg);display:flex;flex-direction:column;gap:8px;min-width:0}
+.portfolio-metric small,.portfolio-secondary small{font-size:9px;color:var(--muted);letter-spacing:.7px;font-weight:800}
+.portfolio-metric strong{font:700 20px 'IBM Plex Mono',monospace;overflow-wrap:anywhere}
+.portfolio-metric span{font-size:10px;color:var(--muted);line-height:1.45}
+.portfolio-secondary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.portfolio-secondary>div{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:6px}
+.portfolio-secondary b{font:700 13px 'IBM Plex Mono',monospace}
+.portfolio-table-card{padding:16px;min-width:0}
+.portfolio-disclaimer{padding:12px 2px 2px;color:var(--muted);font-size:10px}
+@media(max-width:900px){.portfolio-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.portfolio-overview{padding:14px}.portfolio-overview-head{flex-direction:column}.portfolio-metrics{grid-template-columns:1fr 1fr;gap:8px}.portfolio-metric{padding:11px}.portfolio-metric strong{font-size:16px}.portfolio-secondary{grid-template-columns:1fr}.portfolio-table-card{padding:12px}}
