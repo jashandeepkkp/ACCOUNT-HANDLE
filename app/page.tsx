@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Position = { id:number; symbol:string; exchange:string; product:string; qty:number; avg:number; ltp:number; pnl:number; account:string; state:"OPEN"|"CLOSED" };
 const seed:Position[] = [
@@ -13,6 +13,42 @@ const seed:Position[] = [
  {id:8,symbol:"TCS",exchange:"NSE",product:"CNC",qty:0,avg:3920,ltp:3884,pnl:-360,account:"Beta",state:"CLOSED"}
 ];
 const money=(n:number)=>new Intl.NumberFormat("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+function TradingViewChart({symbol,theme}:{symbol:string;theme:"light"|"dark"}){
+ const containerRef=useRef<HTMLDivElement|null>(null);
+ useEffect(()=>{
+  const container=containerRef.current;
+  if(!container)return;
+  container.innerHTML="";
+  const widget=document.createElement("div");
+  widget.className="tradingview-widget-container__widget";
+  widget.style.height="calc(100% - 28px)";
+  widget.style.width="100%";
+  const attribution=document.createElement("div");
+  attribution.className="tradingview-attribution";
+  const link=document.createElement("a");
+  link.href="https://www.tradingview.com/";
+  link.target="_blank";
+  link.rel="noopener nofollow";
+  link.textContent="Charts provided by TradingView";
+  attribution.appendChild(link);
+  const script=document.createElement("script");
+  script.type="text/javascript";
+  script.src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+  script.async=true;
+  script.text=JSON.stringify({
+   autosize:true,symbol,interval:"15",timezone:"Asia/Kolkata",theme,style:"1",locale:"en",
+   allow_symbol_change:true,calendar:false,details:true,hide_side_toolbar:false,
+   hide_top_toolbar:false,hide_legend:false,hide_volume:false,hotlist:false,
+   save_image:true,withdateranges:true,studies:[],support_host:"https://www.tradingview.com"
+  });
+  container.appendChild(widget);
+  container.appendChild(attribution);
+  container.appendChild(script);
+  return ()=>{container.innerHTML="";};
+ },[symbol,theme]);
+ return <div className="tradingview-live-chart" ref={containerRef} aria-label={`TradingView market chart for ${symbol}`}/>;
+}
+
 export default function Home(){
  const [positions,setPositions]=useState(seed),[tab,setTab]=useState("Positions"),[scope,setScope]=useState("All Accounts"),[view,setView]=useState("ALL"),[direction,setDirection]=useState("NET"),[product,setProduct]=useState("ALL"),[search,setSearch]=useState(""),[selected,setSelected]=useState<number[]>([]),[dark,setDark]=useState(false),[notice,setNotice]=useState(""),[sort,setSort]=useState<"symbol"|"pnl"|"qty">("symbol");
  const [chartRange,setChartRange]=useState("1D");
@@ -31,13 +67,9 @@ export default function Home(){
   <nav className="tabs">{["Summary","Positions","Orders","Holdings","MarketWatch","Trade","Notifications"].map((t,i)=><button key={t} className={tab===t?"tab active":"tab"} onClick={()=>setTab(t)}><span>{["▦","◉","▤","▣","◫","↗","♧"][i]}</span>{t}{t==="Notifications"&&<em>2</em>}</button>)}</nav>
   <div className="page-title"><div><div className="eyebrow">PORTFOLIO MONITOR / LIVE VIEW</div><h1>{tab}</h1><p>Monitor positions across linked trading accounts.</p></div><div className="market-state"><span className="pulse"></span> PAPER MARKET <b>SIMULATED</b><small>Updated just now</small></div></div>
   {tab==="Trade" ? <><section className="card trade-chart">
-   <div className="chart-heading"><div><div className="eyebrow">MARKET CHART / MASTER WATCH</div><h2>RELIANCE <span>NSE · DEMO FEED</span></h2><p>Illustrative candlesticks and volume · not live market data</p></div><div className="chart-ranges">{["1D","1W","1M","3M"].map(r=><button key={r} className={chartRange===r?"active":""} onClick={()=>setChartRange(r)}>{r}</button>)}</div></div>
-   <div className="chart-stats"><span>O <b>₹{candles[0].o.toFixed(2)}</b></span><span>H <b>₹{Math.max(...candles.map(c=>c.h)).toFixed(2)}</b></span><span>L <b>₹{Math.min(...candles.map(c=>c.l)).toFixed(2)}</b></span><span>C <b className="positive">₹{candles[candles.length-1].c.toFixed(2)}</b></span><span>CHANGE <b className="positive">+16.13 (+8.87%)</b></span></div>
-   <div className="chart-canvas"><svg viewBox="0 0 900 250" role="img" aria-label="Illustrative Reliance candlestick chart with volume">
-    {[0,1,2,3,4].map(i=><g key={i}><line className="chart-grid" x1="42" x2="870" y1={20+i*39.5} y2={20+i*39.5}/><text className="chart-axis" x="4" y={24+i*39.5}>₹{(220-i*12.5).toFixed(1)}</text></g>)}
-    {candles.map((c,i)=>{const x=55+i*44,y1=chartY(c.h),y2=chartY(c.l),yo=chartY(c.o),yc=chartY(c.c),up=c.c>=c.o;return <g key={i}><line className={up?"candle-wick up":"candle-wick down"} x1={x+8} x2={x+8} y1={y1} y2={y2}/><rect className={up?"candle-body up":"candle-body down"} x={x} y={Math.min(yo,yc)} width="16" height={Math.max(3,Math.abs(yc-yo))}/><rect className={up?"volume-bar up":"volume-bar down"} x={x} y={235-c.v*.55} width="16" height={c.v*.55}/></g>;})}
-    <text className="chart-axis" x="48" y="248">{chartRange==="1D"?"09:15":chartRange==="1W"?"MON":chartRange==="1M"?"WEEK 1":"AUG"}</text><text className="chart-axis" x="820" y="248">{chartRange==="1D"?"15:30":chartRange==="1W"?"FRI":chartRange==="1M"?"WEEK 4":"NOV"}</text>
-   </svg></div><div className="chart-legend"><span><i className="up"/> Bullish candle</span><span><i className="down"/> Bearish candle</span><span>▥ Volume (illustrative)</span><span>Range: {chartRange}</span></div>
+   <div className="chart-heading"><div><div className="eyebrow">LIVE MARKET CHART / TRADINGVIEW</div><h2>{tradeSymbol.trim()||"Select a symbol"} <span>{tradeExchange} · MARKET DATA</span></h2><p>Interactive market chart · data availability and delays depend on exchange permissions</p></div><span className="paper-pill">MARKET DATA ONLY</span></div>
+   <TradingViewChart symbol={(()=>{const ex=tradeExchange==="NFO"?"NSE":tradeExchange==="BFO"?"BSE":tradeExchange;const raw=tradeSymbol.trim();return raw.includes(":")?raw:(raw?`${ex}:${raw.replace(/\\s+/g,"")}`:"NSE:RELIANCE");})()} theme={dark?"dark":"light"}/>
+   <div className="chart-disclaimer">TradingView chart data is for market viewing only. It does not place orders or guarantee real-time exchange quotes. Confirm live prices with your broker before trading.</div>
   </section><section className="card manual-trade">
    <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place a simulated order from the master account. Live broker execution is not connected.</p></div><span className="paper-pill">PAPER MODE</span></div>
    <div className="trade-grid">
