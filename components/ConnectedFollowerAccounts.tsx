@@ -55,7 +55,7 @@ export default function ConnectedFollowerAccounts() {
   }
 
   function updateCredentials(id: string, key: "clientCode" | "pin" | "totp", value: string) {
-    setCredentials(current => ({ ...current, [id]: { clientCode: "", pin: "", totp: "", ...current[id], [key]: value } }));
+    setCredentials(current => ({ ...current, [id]: { ...current[id], [key]: value } }));
   }
 
   async function login(account: Follower) {
