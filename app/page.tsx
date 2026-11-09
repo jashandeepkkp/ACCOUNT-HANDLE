@@ -51,7 +51,9 @@ function TradingViewChart({symbol,theme}:{symbol:string;theme:"light"|"dark"}){
 
 export default function Home(){
  const [positions,setPositions]=useState(seed),[tab,setTab]=useState("Positions"),[scope,setScope]=useState("All Accounts"),[view,setView]=useState("ALL"),[direction,setDirection]=useState("NET"),[product,setProduct]=useState("ALL"),[search,setSearch]=useState(""),[selected,setSelected]=useState<number[]>([]),[dark,setDark]=useState(false),[notice,setNotice]=useState(""),[sort,setSort]=useState<"symbol"|"pnl"|"qty">("symbol");
- const [chartRange,setChartRange]=useState("1D"),[historyView,setHistoryView]=useState<"OPEN"|"CLOSED">("OPEN");\n const [orderEvents,setOrderEvents]=useState<OrderEvent[]>([]);\n const addOrderEvent=(event:Omit<OrderEvent,"id"|"time">)=>setOrderEvents(es=>[{...event,id:Date.now()+Math.floor(Math.random()*1000),time:new Date().toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"medium"})},...es]);
+ const [chartRange,setChartRange]=useState("1D"),[historyView,setHistoryView]=useState<"OPEN"|"CLOSED">("OPEN");
+ const [orderEvents,setOrderEvents]=useState<OrderEvent[]>([]);
+ const addOrderEvent=(event:Omit<OrderEvent,"id"|"time">)=>setOrderEvents(es=>[{...event,id:Date.now()+Math.floor(Math.random()*1000),time:new Date().toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"medium"})},...es]);
  const [accountSessions,setAccountSessions]=useState([{id:"MASTER",name:"Angel One · Master",balance:500000,connected:true,ai:true,role:"MASTER"},{id:"Alpha",name:"Follower Alpha",balance:250000,connected:true,ai:true,role:"FOLLOWER"},{id:"Beta",name:"Follower Beta",balance:175000,connected:true,ai:false,role:"FOLLOWER"},{id:"Gamma",name:"Follower Gamma",balance:100000,connected:false,ai:false,role:"FOLLOWER"}]);
  const toggleAccountSession=(id:string)=>setAccountSessions(xs=>xs.map(a=>a.id===id?{...a,connected:!a.connected}:a));
  const toggleAccountAI=(id:string)=>setAccountSessions(xs=>xs.map(a=>a.id===id?{...a,ai:!a.ai}:a));
