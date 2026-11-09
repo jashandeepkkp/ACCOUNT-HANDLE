@@ -26,8 +26,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
   if (!validId(accountId)) return NextResponse.json({ error: "Invalid follower account ID." }, { status: 400 });
   if (!originAllowed(request)) return NextResponse.json({ error: "Cross-origin request blocked." }, { status: 403 });
   if (!process.env.ANGELONE_API_KEY || !process.env.ANGELONE_SESSION_ENCRYPTION_KEY ||
-      process.env.ANGELONE_ACCOUNT_AUTHORIZED !== "true") {
-    return NextResponse.json({ error: "Angel One API configuration and account authorization are required." }, { status: 503 });
+      process.env.ANGELONE_FOLLOWERS_AUTHORIZED !== "true") {
+    return NextResponse.json({ error: "Configure ANGELONE_FOLLOWERS_AUTHORIZED=true after authorizing follower-account connections." }, { status: 503 });
   }
   let body: { clientCode?: string; pin?: string; totp?: string };
   try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 }); }
