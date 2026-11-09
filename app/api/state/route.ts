@@ -8,8 +8,7 @@ export const dynamic = "force-dynamic";
 const columns = ["positions", "order_events", "follower_accounts"] as const;
 
 export async function GET() {
-  const session = await getSession();
-  if (!session) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  if (!await getSession()) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   try {
     const sql = await ensureTradingStateTable();
     const rows = await sql`SELECT positions, order_events, follower_accounts, updated_at FROM eagle_trades_state WHERE id = 'owner' LIMIT 1`;
