@@ -125,3 +125,28 @@
 .trade-account-corner p{font-size:11px!important}
 .trade-account-corner .trade-warning{font-size:10px}
 @media(max-width:700px){.trade-account-corner{justify-content:stretch}.trade-account-corner>section{width:100%}}
+
+
+/* Compact Trade tab Master account login button and connection status */
+.master-login-widget{width:100%;max-width:460px;margin:0 0 12px auto;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.master-login-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.master-login-state{display:flex;align-items:center;gap:10px;min-width:0}
+.master-login-state>div{display:grid;gap:3px}
+.master-login-state strong{font-size:10px;letter-spacing:.7px}
+.master-status-text{font-size:10px;color:var(--muted);font-weight:800}
+.master-status-text.connected{color:#168653}
+.master-status-dot{width:9px;height:9px;border-radius:50%;background:#aab3bf;flex-shrink:0}
+.master-status-dot.is-connected{background:#19a565;box-shadow:0 0 0 3px #19a56522}
+.master-status-dot.is-checking{background:#d69b32}
+.master-login-button{border:1px solid var(--teal);border-radius:5px;background:var(--teal);color:white;padding:9px 13px;font-size:10px;font-weight:900;letter-spacing:.35px;cursor:pointer}
+.master-login-button:disabled{opacity:.55;cursor:not-allowed}
+.master-logout-button{background:var(--bg);border-color:var(--line);color:var(--ink)}
+.master-login-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.master-login-form label{display:grid;gap:5px;min-width:0}
+.master-login-form label span{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.5px}
+.master-login-form input{width:100%;min-width:0;padding:9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);font:12px 'IBM Plex Mono',monospace}
+.master-login-form button{align-self:end}
+.master-login-form p,.master-login-note,.master-login-message{grid-column:1/-1;margin:0;color:var(--muted);font-size:10px;line-height:1.5}
+.master-login-note{margin-top:8px}
+.master-login-message{margin-top:8px;color:var(--ink)}
+@media(max-width:600px){.master-login-widget{max-width:none}.master-login-form{grid-template-columns:1fr}.master-login-form button{width:100%}}
