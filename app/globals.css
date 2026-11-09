@@ -74,3 +74,25 @@
 .account-dashboard-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:9px;margin-top:13px}
 .dark .connection-count,.dark .connection-badge.online,.dark .account-login{background:#183c31;color:#83d9b0;border-color:#285b49}
 @media(max-width:700px){.connected-dashboard{padding:15px 12px}.connected-title{flex-direction:column}.account-cards{grid-template-columns:1fr}.account-dashboard-foot{flex-direction:column}}
+
+
+/* Order notification event history */
+.notification-history{padding:20px;min-width:0}
+.notification-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.notification-heading h2{font-size:19px;margin:5px 0}
+.notification-heading p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+.notification-total{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:7px 10px;font:700 10px 'IBM Plex Mono',monospace;white-space:nowrap}
+.notification-list{display:grid}
+.notification-row{display:flex;align-items:flex-start;gap:13px;padding:15px 2px;border-bottom:1px solid var(--line)}
+.notification-status{flex-shrink:0;min-width:74px;text-align:center;border-radius:5px;padding:7px 8px;font-size:9px;font-weight:900;letter-spacing:.5px}
+.notification-status.placed{background:#edf3ff;color:#3866b0}
+.notification-status.filled{background:#e8f7ef;color:#167b4d}
+.notification-status.failed{background:#fff0f0;color:#b3343d}
+.notification-main{min-width:0;flex:1}
+.notification-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.notification-title b{font-size:12px}
+.notification-title span{font:10px 'IBM Plex Mono',monospace;color:var(--muted)}
+.notification-main p{margin:5px 0;color:var(--muted);font-size:11px;line-height:1.5}
+.notification-main time{font-size:10px;color:var(--muted)}
+.notification-note{margin-top:13px;padding:10px;border-radius:5px;background:var(--bg);color:var(--muted);font-size:10px;line-height:1.5}
+@media(max-width:600px){.notification-history{padding:14px 12px}.notification-heading{flex-direction:column}.notification-row{gap:9px}.notification-status{min-width:65px}}
