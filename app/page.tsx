@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type Position = { id:number; symbol:string; exchange:string; product:string; qty:number; avg:number; ltp:number; pnl:number; account:string; state:"OPEN"|"CLOSED" };
-type OrderEvent = { id:number; time:string; symbol:string; side:string; qty:number; orderType:string; account:string; status:"PLACED"|"FILLED"|"FAILED"; detail:string };
+type Position = { id:number; symbol:string; exchange:string; product:string; qty:number; avg:number; ltp:number; pnl:number; account:string; state:"OPEN"|"CLOSED" };\ntype OrderEvent = { id:number; time:string; symbol:string; side:string; qty:number; orderType:string; account:string; status:"PLACED"|"FILLED"|"FAILED"; detail:string };
 const seed:Position[] = [
  {id:1,symbol:"NIFTY 26 NOV 24800 CE",exchange:"NFO",product:"NRML",qty:50,avg:182.4,ltp:194.2,pnl:590,account:"Alpha",state:"OPEN"},
  {id:2,symbol:"BANKNIFTY 26 NOV 56200 PE",exchange:"NFO",product:"MIS",qty:-30,avg:318.6,ltp:342.1,pnl:-705,account:"Alpha",state:"OPEN"},
