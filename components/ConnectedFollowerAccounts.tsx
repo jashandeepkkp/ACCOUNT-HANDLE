@@ -1,33 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCloudState } from "@/lib/supabase/use-cloud-state";
 
 type Follower = { id: string; name: string; connected: boolean; masked?: string; busy?: boolean; showLogin?: boolean; message?: string };
-const STORAGE_KEY = "eagle-trades-follower-account-ids";
 
 function newId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), value => value.toString(16).padStart(2, "0")).join("");
 }
 
 export default function ConnectedFollowerAccounts() {
-  const [accounts, setAccounts] = useState<Follower[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const { value: accounts, setValue: setAccounts, ready: loaded } = useCloudState<Follower[]>("follower_accounts", []);
   const [adding, setAdding] = useState(false);
   const [newName, setNewName] = useState("");
   const [credentials, setCredentials] = useState<Record<string, { clientCode: string; pin: string; totp: string }>>({});
-
-  useEffect(() => {
-    let ids: string[] = [];
-    try { ids = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]") as string[]; } catch { ids = []; }
-    ids = ids.filter(id => /^[a-f0-9]{32}$/.test(id));
-    setAccounts(ids.map((id, index) => ({ id, name: `Follower Account ${index + 1}`, connected: false })));
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(accounts.map(account => account.id)));
-  }, [accounts, loaded]);
 
   useEffect(() => {
     if (!loaded) return;
