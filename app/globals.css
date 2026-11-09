@@ -160,3 +160,17 @@
 .follower-login-form button{align-self:end}
 .follower-login-form label:first-child{grid-column:1/-1}
 @media(max-width:620px){.follower-login-form{grid-template-columns:1fr}.follower-login-form label:first-child{grid-column:auto}.follower-login-form button{width:100%}}
+
+
+/* Supabase cloud account and persistence status */
+.cloud-account{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 55%,var(--panel))}
+.cloud-account-copy{display:grid;gap:5px;min-width:190px}
+.cloud-account-copy b{font-size:11px;letter-spacing:.7px}
+.cloud-account-copy span,.cloud-help,.cloud-message{font-size:10px;color:var(--muted);line-height:1.5}
+.cloud-auth-form{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.cloud-auth-form input{width:190px;max-width:100%;padding:9px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink);font:11px 'DM Sans',sans-serif}
+.cloud-button{border:1px solid var(--teal);border-radius:5px;background:var(--teal);color:#fff;padding:9px 12px;font-size:10px;font-weight:800}
+.cloud-button.secondary{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.cloud-button:disabled{opacity:.55;cursor:not-allowed}
+.cloud-account>.cloud-help,.cloud-account>.cloud-message{flex-basis:100%}
+@media(max-width:700px){.cloud-account{padding:14px 12px}.cloud-auth-form{width:100%}.cloud-auth-form input{width:100%;flex:1 1 100%}.cloud-auth-form button{flex:1}}
