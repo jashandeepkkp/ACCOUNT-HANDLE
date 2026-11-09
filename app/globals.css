@@ -160,3 +160,6 @@
 .follower-login-form button{align-self:end}
 .follower-login-form label:first-child{grid-column:1/-1}
 @media(max-width:620px){.follower-login-form{grid-template-columns:1fr}.follower-login-form label:first-child{grid-column:auto}.follower-login-form button{width:100%}}
+
+/* EAGLE TRADES brand mark */
+.logo{overflow:hidden;background:#fff;border:1px solid #f0d18a;border-radius:9px}.logo img{display:block;width:100%;height:100%;object-fit:contain}
