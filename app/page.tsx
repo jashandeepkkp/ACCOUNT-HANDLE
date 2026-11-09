@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import AngelOneMasterLogin from "@/components/AngelOneMasterLogin";
 
 type Position = { id:number; symbol:string; exchange:string; product:string; qty:number; avg:number; ltp:number; pnl:number; account:string; state:"OPEN"|"CLOSED" };
 type OrderEvent = { id:number; time:string; symbol:string; side:string; qty:number; orderType:string; account:string; status:"PLACED"|"FILLED"|"FAILED"; detail:string };
@@ -84,6 +85,7 @@ export default function Home(){
    <TradingViewChart symbol="OANDA:XAUUSD" theme={dark?"dark":"light"}/>
    <div className="chart-disclaimer">TradingView chart data is for market viewing only. It does not place orders or guarantee real-time exchange quotes. Confirm live prices with your broker before trading.</div>
   </section><section className="card manual-trade">
+   <AngelOneMasterLogin/>
    <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place a simulated order from the master account. Live broker execution is not connected.</p></div><span className="paper-pill">PAPER MODE</span></div>
    <div className="trade-grid">
     <label className="trade-field">Trading account<select value={tradeAccount} onChange={e=>setTradeAccount(e.target.value)}><option value="MASTER">Master Account · Angel One (Demo)</option><option value="Alpha">Follower Alpha · Demo</option><option value="Beta">Follower Beta · Demo</option><option value="Gamma">Follower Gamma · Demo</option></select></label>
