@@ -5,14 +5,14 @@ import AngelOneMasterLogin from "@/components/AngelOneMasterLogin";
 type Position = { id:number; symbol:string; exchange:string; product:string; qty:number; avg:number; ltp:number; pnl:number; account:string; stopLoss:number|null; target:number|null; state:"OPEN"|"CLOSED" };
 type OrderEvent = { id:number; time:string; symbol:string; side:string; qty:number; orderType:string; account:string; status:"PLACED"|"FILLED"|"FAILED"; detail:string };
 const seed:Position[] = [
- {id:1,symbol:"NIFTY 26 NOV 24800 CE",exchange:"NFO",product:"NRML",qty:50,avg:182.4,ltp:194.2,pnl:590,account:"Alpha",state:"OPEN"},
- {id:2,symbol:"BANKNIFTY 26 NOV 56200 PE",exchange:"NFO",product:"MIS",qty:-30,avg:318.6,ltp:342.1,pnl:-705,account:"Alpha",state:"OPEN"},
- {id:3,symbol:"RELIANCE",exchange:"NSE",product:"CNC",qty:12,avg:1462.5,ltp:1481.2,pnl:224.4,account:"Beta",state:"OPEN"},
- {id:4,symbol:"HDFCBANK",exchange:"NSE",product:"MIS",qty:-40,avg:1768.2,ltp:1759.8,pnl:336,account:"Beta",state:"OPEN"},
- {id:5,symbol:"FINNIFTY 26 NOV 25800 CE",exchange:"NFO",product:"NRML",qty:0,avg:112.3,ltp:106.5,pnl:-290,account:"Gamma",state:"CLOSED"},
- {id:6,symbol:"SBIN",exchange:"NSE",product:"CNC",qty:25,avg:842.1,ltp:850.4,pnl:207.5,account:"Gamma",state:"OPEN"},
- {id:7,symbol:"SENSEX 27 NOV 82000 PE",exchange:"BFO",product:"MIS",qty:-20,avg:224.8,ltp:217.6,pnl:144,account:"Alpha",state:"OPEN"},
- {id:8,symbol:"TCS",exchange:"NSE",product:"CNC",qty:0,avg:3920,ltp:3884,pnl:-360,account:"Beta",state:"CLOSED"}
+ {id:1,symbol:"NIFTY 26 NOV 24800 CE",exchange:"NFO",product:"NRML",qty:50,avg:182.4,ltp:194.2,pnl:590,account:"Alpha",stopLoss:null,target:null,state:"OPEN"},
+ {id:2,symbol:"BANKNIFTY 26 NOV 56200 PE",exchange:"NFO",product:"MIS",qty:-30,avg:318.6,ltp:342.1,pnl:-705,account:"Alpha",stopLoss:null,target:null,state:"OPEN"},
+ {id:3,symbol:"RELIANCE",exchange:"NSE",product:"CNC",qty:12,avg:1462.5,ltp:1481.2,pnl:224.4,account:"Beta",stopLoss:null,target:null,state:"OPEN"},
+ {id:4,symbol:"HDFCBANK",exchange:"NSE",product:"MIS",qty:-40,avg:1768.2,ltp:1759.8,pnl:336,account:"Beta",stopLoss:null,target:null,state:"OPEN"},
+ {id:5,symbol:"FINNIFTY 26 NOV 25800 CE",exchange:"NFO",product:"NRML",qty:0,avg:112.3,ltp:106.5,pnl:-290,account:"Gamma",stopLoss:null,target:null,state:"CLOSED"},
+ {id:6,symbol:"SBIN",exchange:"NSE",product:"CNC",qty:25,avg:842.1,ltp:850.4,pnl:207.5,account:"Gamma",stopLoss:null,target:null,state:"OPEN"},
+ {id:7,symbol:"SENSEX 27 NOV 82000 PE",exchange:"BFO",product:"MIS",qty:-20,avg:224.8,ltp:217.6,pnl:144,account:"Alpha",stopLoss:null,target:null,state:"OPEN"},
+ {id:8,symbol:"TCS",exchange:"NSE",product:"CNC",qty:0,avg:3920,ltp:3884,pnl:-360,account:"Beta",stopLoss:null,target:null,state:"CLOSED"}
 ];
 const money=(n:number)=>new Intl.NumberFormat("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 function TradingViewChart({symbol,theme}:{symbol:string;theme:"light"|"dark"}){
