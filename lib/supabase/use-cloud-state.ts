@@ -54,7 +54,9 @@ export function useCloudState<T>(column: CloudColumn, initialValue: T) {
       else { setHydrated(false); setValue(initialValue); setReady(true); }
     });
     return () => { active = false; listener.subscription.unsubscribe(); };
-  }, [load, initialValue]);
+  // initialValue is a stable seed supplied by the owning component; do not reload on array identity changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [load]);
 
   useEffect(() => {
     if (!ready || !userId || !hydrated) return;
