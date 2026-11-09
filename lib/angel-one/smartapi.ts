@@ -19,9 +19,9 @@ function networkIdentity() {
   };
 }
 
-export function smartApiHeaders(session?: AngelOneSession): HeadersInit {
+export function smartApiHeaders(session?: AngelOneSession, clientCodeOverride?: string): HeadersInit {
   const apiKey = process.env.ANGELONE_API_KEY;
-  const clientCode = session?.clientCode ?? process.env.ANGELONE_CLIENT_CODE;
+  const clientCode = session?.clientCode ?? clientCodeOverride ?? process.env.ANGELONE_CLIENT_CODE;
   const publicIp = process.env.ANGELONE_STATIC_IP;
   const identity = networkIdentity();
   if (!apiKey || !clientCode || !publicIp || !identity.localIp || !identity.mac) {
