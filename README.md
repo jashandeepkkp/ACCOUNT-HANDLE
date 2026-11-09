@@ -1,4 +1,4 @@
-# CopyPilot — Angel One trade-copy dashboard (paper mode)
+# EAGLE TRADES — Angel One trade-copy dashboard (paper mode)
 
 This repository contains a Next.js frontend prototype for a multi-account trade-copying product. It starts with Angel One as the planned broker adapter and deliberately runs entirely in local paper/simulation mode.
 
