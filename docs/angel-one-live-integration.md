@@ -1,13 +1,13 @@
 # Angel One live integration — staged rollout
 
-## Current release: secure foundation only
+## Current release: broker authentication + read-only account API (execution locked)
 
 This release adds a read-only server readiness endpoint:
 
 - `GET /api/broker/status`
 - Reports whether required server-side configuration flags exist.
 - Never returns API keys, client codes, tokens, PINs, TOTP values, or the configured IP.
-- Does not create a SmartAPI session and cannot place, modify, or cancel an order.
+- Adds server-side PIN/TOTP login, AES-256-GCM encrypted HttpOnly session cookie, session check/logout, and read-only funds, positions, holdings, order-book and trade-book routes.\n- Does not place, modify, or cancel an order.
 - Live manual execution and copy trading are hard-disabled in source code.
 
 ## Initial account model
@@ -21,7 +21,7 @@ Configure secrets only in the production host's private environment-variable set
 Required readiness values:
 
 - `ANGELONE_API_KEY`
-- `ANGELONE_CLIENT_CODE`
+- `ANGELONE_CLIENT_CODE`\n- `ANGELONE_SESSION_ENCRYPTION_KEY` (64 hex chars; generate with `openssl rand -hex 32`)\n- `ANGELONE_CLIENT_LOCAL_IP` and `ANGELONE_MAC_ADDRESS` (verify request identity values required by Angel One)
 - `ANGELONE_STATIC_IP`
 - `ANGELONE_STATIC_IP_REGISTERED=true` only after Angel One confirms the exact egress IP is registered
 - `ANGELONE_ACCOUNT_AUTHORIZED=true` only after account ownership and API permissions are verified
@@ -49,4 +49,4 @@ API and automated/copy trading may be subject to Angel One's terms and SEBI/exch
 
 ## Safety invariant
 
-Do not change `ANGELONE_LIVE_EXECUTION_ENABLED` or `ANGELONE_COPY_TRADING_ENABLED` to true until the reviewed implementation gates above are complete. The current release deliberately contains no order-placement route.
+Do not change `ANGELONE_LIVE_EXECUTION_ENABLED` or `ANGELONE_COPY_TRADING_ENABLED` to true until the reviewed implementation gates above are complete. The current release deliberately contains no order-placement route. Live execution remains disabled in code; copy trading remains disabled.
