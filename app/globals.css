@@ -115,3 +115,13 @@
 .portfolio-disclaimer{padding:12px 2px 2px;color:var(--muted);font-size:10px}
 @media(max-width:900px){.portfolio-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.portfolio-overview{padding:14px}.portfolio-overview-head{flex-direction:column}.portfolio-metrics{grid-template-columns:1fr 1fr;gap:8px}.portfolio-metric{padding:11px}.portfolio-metric strong{font-size:16px}.portfolio-secondary{grid-template-columns:1fr}.portfolio-table-card{padding:12px}}
+
+
+/* Compact Angel One Master login in the Trade tab corner */
+.trade-account-corner{display:flex;justify-content:flex-end;align-items:flex-start;margin:0 0 12px}
+.trade-account-corner>section{width:min(100%,430px);padding:12px!important;margin:0!important}
+.trade-account-corner h2{font-size:14px!important}
+.trade-account-corner .eyebrow{font-size:9px}
+.trade-account-corner p{font-size:11px!important}
+.trade-account-corner .trade-warning{font-size:10px}
+@media(max-width:700px){.trade-account-corner{justify-content:stretch}.trade-account-corner>section{width:100%}}
