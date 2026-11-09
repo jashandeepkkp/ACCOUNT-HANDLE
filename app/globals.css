@@ -9,3 +9,37 @@
 
 .tradingview-live-chart{width:100%;height:620px;min-height:420px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:7px;background:var(--panel)}.tradingview-live-chart .tradingview-widget-container__widget{height:calc(100% - 24px);width:100%}.tradingview-attribution{height:24px;display:flex;align-items:center;justify-content:flex-end;padding:0 9px;font-size:10px;color:var(--muted)}.tradingview-attribution a{color:var(--muted);text-decoration:none}.chart-disclaimer{margin-top:10px;color:var(--muted);font-size:10px;line-height:1.6}.trade-chart .chart-heading{margin-bottom:14px}.trade-chart .paper-pill{white-space:nowrap}
 @media(max-width:700px){.tradingview-live-chart{height:520px;min-height:400px}}
+
+
+/* Trade terminal responsive layout */
+.trade-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,390px);gap:16px;align-items:start}
+.trade-workspace .trade-chart{min-width:0;margin:0}
+.trade-workspace .manual-trade{width:100%;max-width:none;min-width:0;margin:0;padding:18px}
+.trade-workspace .chart-heading{gap:8px}
+.trade-workspace .chart-heading h2 span{display:inline-block;margin-top:4px}
+.trade-workspace .tradingview-live-chart{height:clamp(440px,62vh,720px);min-height:420px}
+.trade-workspace .trade-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.trade-workspace .trade-field.wide{grid-column:1/-1}
+.trade-workspace .trade-summary{gap:13px;padding:11px;margin-top:14px}
+.trade-workspace .trade-summary div{min-width:calc(50% - 10px)}
+.trade-workspace .trade-actions{flex-wrap:wrap}
+.trade-workspace .place-buy,.trade-workspace .place-sell{flex:1;min-width:150px;padding:12px 10px}
+.trade-history{margin-top:16px;padding:18px 16px 0;min-width:0}
+.history-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:15px}
+.history-head h2{font-size:19px;margin:5px 0}
+.history-head p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.history-tabs{display:flex;gap:5px;flex-shrink:0}
+.history-tabs button{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:5px;padding:9px 13px;background:var(--bg);color:var(--muted);font-size:10px;font-weight:800}
+.history-tabs button.active{background:#e4f5f4;border-color:var(--teal);color:#087f7c}
+.history-tabs b{font:600 10px 'IBM Plex Mono',monospace}
+.history-table{width:100%;border-collapse:collapse;min-width:900px}
+.history-table th{background:var(--bg);color:var(--muted);font-size:9px;letter-spacing:.6px;text-align:left;padding:11px 9px;border-block:1px solid var(--line);white-space:nowrap}
+.history-table td{padding:12px 9px;border-bottom:1px solid var(--line);font:11px 'IBM Plex Mono',monospace;white-space:nowrap}
+.history-table tbody tr:hover{background:color-mix(in srgb,var(--bg) 70%,var(--panel))}
+.history-table td.symbol{font:700 11px 'DM Sans',sans-serif}
+.history-close{border:1px solid #e8b6b8;border-radius:4px;background:#fff0f0;color:#b3343d;padding:6px 9px;font:700 10px 'DM Sans',sans-serif}
+.muted-dash{color:var(--muted);font:10px 'DM Sans',sans-serif}
+.history-foot{padding:11px 2px;color:var(--muted);font-size:10px}
+@media(max-width:1100px){.trade-workspace{grid-template-columns:minmax(0,1fr) minmax(300px,350px)}.trade-workspace .manual-trade{padding:14px}.trade-workspace .trade-grid{gap:10px}}
+@media(max-width:850px){.trade-workspace{grid-template-columns:minmax(0,1fr)}.trade-workspace .manual-trade{max-width:none}.trade-workspace .tradingview-live-chart{height:540px}}
+@media(max-width:600px){.trade-workspace .tradingview-live-chart{height:470px;min-height:390px}.history-head{align-items:flex-start;flex-direction:column}.history-tabs{width:100%}.history-tabs button{flex:1;justify-content:center}.trade-workspace .trade-grid{grid-template-columns:1fr 1fr}.trade-workspace .trade-field.wide{grid-column:1/-1}.trade-workspace .trade-summary{gap:12px}.trade-workspace .trade-summary div{min-width:calc(50% - 8px)}.trade-history{padding:14px 10px 0}}
