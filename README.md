@@ -39,3 +39,30 @@ Row Level Security restricts each user to their own row. The browser uses only t
 - Current paper/demo data is used as the initial state for a new cloud account; existing anonymous browser data is not automatically imported from another device.
 - The database migration must be applied manually in Supabase before the feature can save data. Without Supabase environment variables and a signed-in app user, cloud sync is unavailable.
 - This is user-state persistence, not broker-ledger reconciliation or real order execution. Live trading remains disabled.
+
+
+## Neon storage and first-screen login
+
+This version replaces the earlier Supabase browser-auth setup with Neon PostgreSQL and a server-side login gate.
+
+### Render environment variables
+- `DATABASE_URL`: Neon pooled or direct PostgreSQL connection string; keep server-only.
+- `APP_USERNAME`: one owner login username.
+- `APP_PASSWORD`: one strong unique password (store only as a Render secret; never commit it).
+- `SESSION_SECRET`: random secret of at least 32 characters.
+
+### Setup
+1. Create a Neon project at https://neon.tech and copy its PostgreSQL connection string.
+2. In Render → EAGLE TRADES → Environment, add the four variables above.
+3. Merge this PR and deploy. The API creates the `eagle_trades_state` table automatically on first authenticated state request.
+4. Visit the app root and sign in with the configured username and password.
+
+### Security and behavior
+- Dashboard is gated by an HttpOnly, Secure-in-production, SameSite=Strict signed session cookie (12-hour expiry).
+- Password and session secret are checked server-side only; no credentials are bundled into browser JavaScript.
+- Neon database access uses the server-side `DATABASE_URL`, not a public client key.
+- State API requires an authenticated session and stores positions, order events and follower-account metadata.
+- This is a single-owner login configured via Render, not a public self-registration system or per-user role system.
+- Broker PINs, TOTP codes and broker access tokens must not be added to persisted application JSON.
+- Existing Supabase state is not automatically copied into Neon; export/import existing data before switching if it must be retained.
+- Live broker order execution remains disabled.
