@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCloudState } from "@/lib/supabase/use-cloud-state";
+import { useCloudState } from "@/lib/neon/use-cloud-state";
 
 type Follower = { id: string; name: string; connected: boolean; masked?: string; busy?: boolean; showLogin?: boolean; message?: string };
 
