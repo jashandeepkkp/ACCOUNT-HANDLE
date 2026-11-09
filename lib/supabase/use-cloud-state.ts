@@ -14,20 +14,24 @@ export function useCloudState<T>(column: CloudColumn, initialValue: T) {
   const [userId, setUserId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [cloudAvailable, setCloudAvailable] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   const load = useCallback(async (id: string) => {
     const client = getSupabaseBrowserClient();
     if (!client) { setCloudAvailable(false); setReady(true); return; }
     setCloudAvailable(true);
+    setHydrated(false);
     const { data, error } = await client.from("user_app_state")
       .select(column).eq("user_id", id).maybeSingle();
     if (error) {
       console.error("Supabase state load failed:", error.message);
+      setHydrated(false);
       setReady(true);
       return;
     }
     const stored = data?.[column];
     if (stored !== null && stored !== undefined) setValue(stored as T);
+    setHydrated(true);
     setReady(true);
   }, [column]);
 
@@ -47,13 +51,13 @@ export function useCloudState<T>(column: CloudColumn, initialValue: T) {
       const id = session?.user.id ?? null;
       setUserId(id);
       if (id) { setReady(false); void load(id); }
-      else { setReady(true); }
+      else { setHydrated(false); setValue(initialValue); setReady(true); }
     });
     return () => { active = false; listener.subscription.unsubscribe(); };
-  }, [load]);
+  }, [load, initialValue]);
 
   useEffect(() => {
-    if (!ready || !userId) return;
+    if (!ready || !userId || !hydrated) return;
     const client = getSupabaseBrowserClient();
     if (!client) return;
     const timer = window.setTimeout(async () => {
@@ -64,7 +68,7 @@ export function useCloudState<T>(column: CloudColumn, initialValue: T) {
       if (error) console.error("Supabase state save failed:", error.message);
     }, 500);
     return () => window.clearTimeout(timer);
-  }, [column, ready, userId, value]);
+  }, [column, ready, userId, hydrated, value]);
 
   return { value, setValue, ready, cloudAvailable, signedIn: Boolean(userId) };
 }
