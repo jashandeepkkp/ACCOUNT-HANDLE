@@ -43,3 +43,34 @@
 @media(max-width:1100px){.trade-workspace{grid-template-columns:minmax(0,1fr) minmax(300px,350px)}.trade-workspace .manual-trade{padding:14px}.trade-workspace .trade-grid{gap:10px}}
 @media(max-width:850px){.trade-workspace{grid-template-columns:minmax(0,1fr)}.trade-workspace .manual-trade{max-width:none}.trade-workspace .tradingview-live-chart{height:540px}}
 @media(max-width:600px){.trade-workspace .tradingview-live-chart{height:470px;min-height:390px}.history-head{align-items:flex-start;flex-direction:column}.history-tabs{width:100%}.history-tabs button{flex:1;justify-content:center}.trade-workspace .trade-grid{grid-template-columns:1fr 1fr}.trade-workspace .trade-field.wide{grid-column:1/-1}.trade-workspace .trade-summary{gap:12px}.trade-workspace .trade-summary div{min-width:calc(50% - 8px)}.trade-history{padding:14px 10px 0}}
+
+
+/* Summary connected accounts dashboard */
+.connected-dashboard{padding:20px;border-bottom:1px solid var(--line)}
+.connected-title{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:15px}
+.connected-title h2{font-size:19px;margin:5px 0}
+.connected-title p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+.connection-count{display:inline-flex;align-items:center;gap:7px;background:#e8f7ef;color:#167b4d;padding:7px 10px;border-radius:5px;font-size:10px;font-weight:800;white-space:nowrap}
+.connection-count i,.ai-state i{width:7px;height:7px;border-radius:50%;background:#16a064;display:inline-block}
+.account-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.account-card{min-width:0;border:1px solid var(--line);border-radius:8px;padding:14px;background:var(--panel)}
+.account-card-top{display:flex;align-items:center;gap:10px;min-width:0}
+.broker-mark{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:8px;background:#e7f5f4;color:#078f8b;font-weight:800;font-size:15px}
+.account-name{display:grid;gap:3px;min-width:0;flex:1}
+.account-name b{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.account-name small,.account-numbers small{font-size:9px;color:var(--muted);letter-spacing:.65px}
+.connection-badge{font-size:9px;font-weight:800;padding:5px 7px;border-radius:4px;white-space:nowrap}
+.connection-badge.online{background:#e8f7ef;color:#167b4d}
+.connection-badge.offline{background:#f0f1f3;color:#778292}
+.account-numbers{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px 0 12px;margin-top:10px;border-bottom:1px solid var(--line)}
+.account-numbers div{display:grid;gap:6px;min-width:0}
+.account-numbers strong{font:600 16px 'IBM Plex Mono',monospace;overflow:hidden;text-overflow:ellipsis}
+.account-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:12px}
+.ai-state{display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:800;color:var(--muted);margin-right:auto}
+.ai-state:not(.ai-on) i{background:#aab3bf}
+.ai-state.ai-on{color:#167b4d}
+.ai-toggle,.account-logout,.account-login{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:4px;padding:7px 9px;font-size:10px;font-weight:700}
+.account-login{background:#e8f7ef;color:#167b4d;border-color:#b9e4ce}
+.account-dashboard-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:9px;margin-top:13px}
+.dark .connection-count,.dark .connection-badge.online,.dark .account-login{background:#183c31;color:#83d9b0;border-color:#285b49}
+@media(max-width:700px){.connected-dashboard{padding:15px 12px}.connected-title{flex-direction:column}.account-cards{grid-template-columns:1fr}.account-dashboard-foot{flex-direction:column}}
