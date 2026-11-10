@@ -26,9 +26,9 @@ export default function ConnectedFollowerAccounts() {
     accounts.forEach(async account => {
       try {
         const response = await fetch(`/api/broker/followers/${account.id}`, { cache: "no-store", credentials: "same-origin" });
-        const data = await response.json() as { connected?: boolean; clientCodeMasked?: string };
+        const data = await response.json() as { connected?: boolean; clientCodeMasked?: string; authorizedForCopy?: boolean };
         setAccounts(current => current.map(item => item.id === account.id
-          ? { ...item, connected: Boolean(response.ok && data.connected), masked: data.clientCodeMasked }
+          ? { ...item, connected: Boolean(response.ok && data.connected), masked: data.clientCodeMasked, authorizedForCopy: Boolean(data.authorizedForCopy) }
           : item));
       } catch {
         setAccounts(current => current.map(item => item.id === account.id ? { ...item, connected: false } : item));
