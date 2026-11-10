@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type CloudColumn = "positions" | "order_events" | "follower_accounts";
+type CloudColumn = "positions" | "order_events" | "follower_accounts" | "pre_data_starting_balance";
 
 export function useCloudState<T>(column: CloudColumn, initialValue: T) {
   const [value, setValue] = useState<T>(initialValue);
