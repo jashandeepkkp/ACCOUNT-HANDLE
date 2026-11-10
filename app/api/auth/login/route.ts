@@ -11,8 +11,8 @@ function safeEqual(left: string, right: string) {
 }
 
 export async function POST(request: NextRequest) {
-  const expectedUsername = process.env.APP_USERNAME;
-  const expectedPassword = process.env.APP_PASSWORD;
+  const expectedUsername = process.env.APP_USERNAME?.trim();
+  const expectedPassword = process.env.APP_PASSWORD?.trim();
   const sessionSecret = process.env.SESSION_SECRET;
   if (!expectedUsername || !expectedPassword || !sessionSecret || sessionSecret.length < 32) {
     return NextResponse.json({ error: "Login is not configured. Add APP_USERNAME, APP_PASSWORD and a 32+ character SESSION_SECRET in Render." }, { status: 503 });
