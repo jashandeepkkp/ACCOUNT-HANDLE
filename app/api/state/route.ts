@@ -49,7 +49,10 @@ export async function PUT(request: NextRequest) {
         await sql`INSERT INTO eagle_trades_state (id, follower_accounts) VALUES ('owner', ${value}::jsonb) ON CONFLICT (id) DO UPDATE SET follower_accounts = EXCLUDED.follower_accounts, updated_at = now()`;
       }
     }
-    return NextResponse.json({ ok: true, saved: changed });
+    for (const column of changedScalars) {
+      await sql`INSERT INTO eagle_trades_state (id, pre_data_starting_balance) VALUES ('owner', ${body[column] as number}) ON CONFLICT (id) DO UPDATE SET pre_data_starting_balance = EXCLUDED.pre_data_starting_balance, updated_at = now()`;
+    }
+    return NextResponse.json({ ok: true, saved: [...changed, ...changedScalars] });
   } catch (error) {
     console.error("Neon state save failed:", error);
     return NextResponse.json({ error: "Could not save cloud data. Check Neon DATABASE_URL." }, { status: 503 });
