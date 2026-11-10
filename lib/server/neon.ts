@@ -17,5 +17,6 @@ export async function ensureTradingStateTable() {
       updated_at timestamptz NOT NULL DEFAULT now()
     )
   `;
+  await sql`ALTER TABLE eagle_trades_state ADD COLUMN IF NOT EXISTS pre_data_starting_balance numeric NOT NULL DEFAULT 0`;
   return sql;
 }
