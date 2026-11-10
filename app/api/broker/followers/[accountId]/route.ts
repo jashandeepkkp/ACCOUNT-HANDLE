@@ -29,7 +29,7 @@ export async function GET(_request: NextRequest, context: Context) {
 export async function POST(request: NextRequest, context: Context) {
   if (!await getSession()) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   if (!sameOrigin(request)) return NextResponse.json({ error: "Cross-origin request blocked." }, { status: 403 });
-  const { id } = await context.params;
+  const { accountId } = await context.params;
   if (!validId(accountId)) return NextResponse.json({ error: "Invalid account ID." }, { status: 400 });
   let body: { clientCode?: string; pin?: string; totp?: string; authorizedForCopy?: boolean };
   try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON." }, { status: 400 }); }
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest, context: Context) {
 }
 export async function DELETE(_request: NextRequest, context: Context) {
   if (!await getSession()) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
-  const { id } = await context.params;
+  const { accountId } = await context.params;
   if (!validId(accountId)) return NextResponse.json({ error: "Invalid account ID." }, { status: 400 });
   const account = await getBrokerAccount(accountId);
   if (account?.role === "FOLLOWER") {
