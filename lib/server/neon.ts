@@ -18,5 +18,6 @@ export async function ensureTradingStateTable() {
     )
   `;
   await sql`ALTER TABLE eagle_trades_state ADD COLUMN IF NOT EXISTS pre_data_starting_balance numeric NOT NULL DEFAULT 0`;
+  await sql`CREATE TABLE IF NOT EXISTS eagle_trades_daily_snapshots (trading_date date PRIMARY KEY, opening_balance numeric NOT NULL DEFAULT 0, current_balance numeric NOT NULL DEFAULT 0, daily_pnl numeric NOT NULL DEFAULT 0, accounts_count integer NOT NULL DEFAULT 0, captured_at timestamptz NOT NULL DEFAULT now())`;
   return sql;
 }
