@@ -12,9 +12,7 @@ export default function AngelOneMasterLogin() {
   const [connected, setConnected] = useState(false);
   const [checking, setChecking] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
-  const [clientCode, setClientCode] = useState("");
   const [pin, setPin] = useState("");
-  const [authorizedForCopy, setAuthorizedForCopy] = useState(false);
   const [totp, setTotp] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -49,11 +47,10 @@ export default function AngelOneMasterLogin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({ clientCode, pin, totp, authorizedForCopy }),
+        body: JSON.stringify({ pin, totp }),
       });
       const data = await response.json() as BrokerStatus;
       if (!response.ok) throw new Error(data.error || "Angel One login failed.");
-      setClientCode("");
       setPin("");
       setTotp("");
       setShowLogin(false);
@@ -113,23 +110,18 @@ export default function AngelOneMasterLogin() {
       {showLogin && !connected && (
         <form className="master-login-form" onSubmit={login}>
           <label>
-            <span>ANGEL ONE CLIENT CODE</span>
-            <input value={clientCode} onChange={event => setClientCode(event.target.value.toUpperCase())} autoComplete="off" required placeholder="Enter client code" />
-          </label>
-          <label>
             <span>ANGEL ONE PIN</span>
             <input type="password" inputMode="numeric" autoComplete="off" maxLength={6}
-              value={pin} onChange={event => setPin(event.target.value.replace(/\D/g, ""))}
+              value={pin} onChange={event => setPin(event.target.value.replace(/\\D/g, ""))}
               required placeholder="Enter PIN" />
           </label>
           <label>
             <span>AUTHENTICATOR TOTP</span>
             <input type="password" inputMode="numeric" autoComplete="one-time-code" maxLength={6}
-              value={totp} onChange={event => setTotp(event.target.value.replace(/\D/g, ""))}
+              value={totp} onChange={event => setTotp(event.target.value.replace(/\\D/g, ""))}
               required placeholder="6-digit code" />
           </label>
-          <label className="broker-consent"><input type="checkbox" checked={authorizedForCopy} onChange={event => setAuthorizedForCopy(event.target.checked)} /> I own/control this Master account and authorize it to act as the source account for trade-copying, subject to broker approval.</label>
-          <button className="master-login-button" type="submit" disabled={busy || !clientCode.trim() || pin.length < 4 || totp.length !== 6}>
+          <button className="master-login-button" type="submit" disabled={busy || pin.length < 4 || totp.length !== 6}>
             {busy ? "CONNECTING…" : "CONNECT MASTER"}
           </button>
           <p>PIN and TOTP are sent to the secure server login endpoint and are not stored in browser storage.</p>
@@ -137,7 +129,7 @@ export default function AngelOneMasterLogin() {
       )}
 
       {message && <p className="master-login-message" role="status">{message}</p>}
-      <p className="master-login-note">Master authentication is separate from copy authorization. Live order execution remains disabled.</p>
+      <p className="master-login-note">Manual Trading is scoped to this Master account. Live order execution remains disabled.</p>
     </section>
   );
 }
