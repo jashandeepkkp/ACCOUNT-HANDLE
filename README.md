@@ -66,3 +66,28 @@ This version replaces the earlier Supabase browser-auth setup with Neon PostgreS
 - Broker PINs, TOTP codes and broker access tokens must not be added to persisted application JSON.
 - Existing Supabase state is not automatically copied into Neon; export/import existing data before switching if it must be retained.
 - Live broker order execution remains disabled.
+
+
+## Angel One authentication and safety foundation
+
+This PR adds server-side Angel One SmartAPI authentication for one Master and multiple Followers.
+
+### Render-only variables
+- `ANGELONE_API_KEY`: SmartAPI key for the approved Angel One developer application.
+- `ANGELONE_STATIC_IP`: stable outbound public IP that Angel One has registered for the SmartAPI application.
+- `ANGELONE_STATIC_IP_REGISTERED`: set to `true` only after Angel One confirms the IP registration.
+- `ANGELONE_CLIENT_LOCAL_IP` and `ANGELONE_MAC_ADDRESS`: deployment request identity values required by SmartAPI. Confirm the values and hosting compatibility with Angel One.
+- `ANGELONE_SESSION_ENCRYPTION_KEY`: 32 random bytes encoded as 64 hexadecimal characters (`openssl rand -hex 32`).
+- `ANGELONE_ACCOUNT_AUTHORIZED`: keep `false` until broker/API permissions and account ownership/authorization have been verified.
+
+### Behavior
+- Master login takes client code, PIN and current TOTP; follower login takes separate credentials per account.
+- Login is protected by the EAGLE TRADES owner session, same-origin checks and a basic per-process rate limit.
+- Broker JWT/refresh/feed tokens are encrypted using AES-256-GCM and stored server-side in Neon. PIN and TOTP are never persisted.
+- Account rows retain only masked client-code display, role, encrypted session, expiry and explicit copy-consent state.
+- Broker sessions are validated against Angel One profile endpoint and removed on logout/expiry.
+- The safety endpoint reports missing prerequisites. User consent alone never overrides the broker approval environment flag.
+- `/api/broker/orders` is an intentional hard-stop endpoint returning 403. It never transmits orders.
+
+### Important deployment limitation
+Angel One SmartAPI requires valid registered request identity/static-IP configuration. Confirm Render can provide an outbound IP that remains stable and is registered with Angel One. Do not set approval flags to true just to clear the dashboard. This PR does not enable live order execution or copy trading. A separate reviewed release is required for risk limits, duplicate-order/idempotency controls, market/product/symbol validation, order reconciliation, emergency stop, and live-order authorization.

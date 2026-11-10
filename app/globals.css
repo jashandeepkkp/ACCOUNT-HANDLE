@@ -192,3 +192,17 @@
 .session-bar button{border:1px solid #435166;border-radius:4px;background:#1d2a3a;color:#f1c15b;padding:6px 10px;font-size:9px;font-weight:800}
 .session-bar button:disabled{opacity:.6}
 @media(max-width:500px){.login-card{padding:26px 20px}.session-bar{padding:7px 10px}}
+
+/* Angel One account consent and live-safety checklist */
+.broker-consent{display:flex;align-items:flex-start;gap:8px;color:var(--muted);font-size:10px;line-height:1.5;margin:8px 0}
+.broker-consent input{margin-top:2px;accent-color:var(--teal);flex:0 0 auto}
+.broker-safety-panel{margin:16px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--bg);display:grid;gap:10px}
+.broker-safety-panel>div:first-child{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.broker-safety-panel>div:first-child b{font-size:11px;letter-spacing:.7px}
+.broker-safety-panel>div:first-child span{font-size:10px;color:var(--muted)}
+.broker-safety-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.broker-safety-list span{font-size:10px;line-height:1.45}
+.broker-safety-list .passed{color:var(--green)}
+.broker-safety-list .pending{color:var(--red)}
+.broker-safety-panel>strong{font-size:10px;letter-spacing:.8px;color:var(--red)}
+@media(max-width:600px){.broker-safety-list{grid-template-columns:1fr}}
