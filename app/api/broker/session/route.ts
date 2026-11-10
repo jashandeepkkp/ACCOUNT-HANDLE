@@ -1,32 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { getSession } from "@/lib/server/session";
+import { accountSession, deleteBrokerAccount, getBrokerAccount } from "@/lib/angel-one/account-store";
+import { openSession } from "@/lib/angel-one/session";
 import { smartApiRequest } from "@/lib/angel-one/smartapi";
-import { expiredSessionCookie, getSessionCookieName, openSession } from "@/lib/angel-one/session";
-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-export async function GET(request: NextRequest) {
-  const encrypted = request.cookies.get(getSessionCookieName())?.value;
-  const session = encrypted ? openSession(encrypted) : null;
-  if (!session) {
-    const response = NextResponse.json({ connected: false }, { status: 401 });
-    response.cookies.set(expiredSessionCookie());
-    return response;
-  }
+export async function GET() {
+  if (!await getSession()) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   try {
-    const profile = await smartApiRequest<Record<string, unknown>>(
-      "/rest/secure/angelbroking/user/v1/getProfile", "GET", session,
-    );
-    return NextResponse.json({ connected: true, broker: "ANGEL_ONE", account: "MASTER", profile });
-  } catch {
-    const response = NextResponse.json({ connected: false, error: "Broker session expired or unavailable." }, { status: 401 });
-    response.cookies.set(expiredSessionCookie());
-    return response;
-  }
+    const account = await getBrokerAccount("master");
+    if (!account) return NextResponse.json({ connected: false });
+    const brokerSession = accountSession(account, openSession);
+    if (!brokerSession) { await deleteBrokerAccount("master"); return NextResponse.json({ connected: false, error: "Angel One session expired. Reconnect." }); }
+    const profile = await smartApiRequest<Record<string, unknown>>("/rest/secure/angelbroking/user/v1/getProfile", "GET", brokerSession);
+    return NextResponse.json({ connected: true, broker: "ANGEL_ONE", account: "MASTER", clientCodeMasked: account.client_code_masked, authorizedForCopy: account.authorized_for_copy, profile });
+  } catch { return NextResponse.json({ connected: false, error: "Broker session expired or unavailable." }, { status: 401 }); }
 }
-
 export async function DELETE() {
-  const response = NextResponse.json({ connected: false, loggedOut: true });
-  response.cookies.set(expiredSessionCookie());
-  return response;
+  if (!await getSession()) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  try {
+    const account = await getBrokerAccount("master");
+    if (account) {
+      const brokerSession = accountSession(account, openSession);
+      if (brokerSession) await smartApiRequest("/rest/secure/angelbroking/user/v1/logout", "POST", brokerSession, { clientcode: brokerSession.clientCode }).catch(() => undefined);
+    }
+  } finally { await deleteBrokerAccount("master"); }
+  return NextResponse.json({ connected: false, loggedOut: true });
 }
