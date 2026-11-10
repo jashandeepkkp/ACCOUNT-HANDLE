@@ -34,7 +34,7 @@ async function capture() {
   const accounts = await listBrokerAccountsWithSessions();
   const connected = accounts.map(account => ({ account, session: accountSession(account, openSession) })).filter((item): item is { account: (typeof accounts)[number]; session: NonNullable<ReturnType<typeof accountSession>> } => Boolean(item.session));
   if (!connected.length) throw new Error("No authenticated Angel One Master or Follower accounts are connected.");
-  let openingBalance = 0, currentBalance = 0, dailyPnl = 0, count = 0;
+  let openingBalance = 0, dailyPnl = 0, count = 0;
   for (const { session } of connected) {
     const [rms, positions] = await Promise.all([
       smartApiRequest<unknown>("/rest/secure/angelbroking/user/v1/getRMS", "GET", session),
@@ -43,10 +43,10 @@ async function capture() {
     const balance = fundsValue(rms);
     if (balance === null) throw new Error("Angel One returned an unrecognized funds response; no snapshot was saved.");
     openingBalance += balance;
-    currentBalance += balance;
     dailyPnl += positionPnl(positions);
     count += 1;
   }
+  const currentBalance = openingBalance + dailyPnl;
   const sql = await ensureTradingStateTable();
   const date = tradingDate();
   await sql`INSERT INTO eagle_trades_daily_snapshots (trading_date, opening_balance, current_balance, daily_pnl, accounts_count)
