@@ -119,13 +119,13 @@ export default function AngelOneMasterLogin() {
           <label>
             <span>ANGEL ONE PIN</span>
             <input type="password" inputMode="numeric" autoComplete="off" maxLength={6}
-              value={pin} onChange={event => setPin(event.target.value.replace(/\\D/g, ""))}
+              value={pin} onChange={event => setPin(event.target.value.replace(/\D/g, ""))}
               required placeholder="Enter PIN" />
           </label>
           <label>
             <span>AUTHENTICATOR TOTP</span>
             <input type="password" inputMode="numeric" autoComplete="one-time-code" maxLength={6}
-              value={totp} onChange={event => setTotp(event.target.value.replace(/\\D/g, ""))}
+              value={totp} onChange={event => setTotp(event.target.value.replace(/\D/g, ""))}
               required placeholder="6-digit code" />
           </label>
           <label className="broker-consent"><input type="checkbox" checked={authorizedForCopy} onChange={event => setAuthorizedForCopy(event.target.checked)} /> I own/control this Master account and authorize it to act as the source account for trade-copying, subject to broker approval.</label>
