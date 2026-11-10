@@ -91,3 +91,16 @@ This PR adds server-side Angel One SmartAPI authentication for one Master and mu
 
 ### Important deployment limitation
 Angel One SmartAPI requires valid registered request identity/static-IP configuration. Confirm Render can provide an outbound IP that remains stable and is registered with Angel One. Do not set approval flags to true just to clear the dashboard. This PR does not enable live order execution or copy trading. A separate reviewed release is required for risk limits, duplicate-order/idempotency controls, market/product/symbol validation, order reconciliation, emergency stop, and live-order authorization.
+
+
+## PRE DATA — consolidated Angel One daily snapshots
+
+PRE DATA reads the authenticated Master and all authenticated Follower sessions from the encrypted broker-account store. It requests each account's SmartAPI RMS funds and day positions, aggregates the reported funds and position P&L, and stores one combined daily row in Neon. It does not display individual trades or account-level rows.
+
+### Required Render setup
+- Add `CRON_SECRET` as a long random secret in the web service's Render environment.
+- Create a Render Cron Job that runs on weekdays at **03:40 UTC (09:10 India time)** and calls `POST https://YOUR-APP-DOMAIN/api/pre-data/snapshot` with `Authorization: Bearer YOUR_CRON_SECRET`.
+- The cron job should use a command such as: `curl --fail --silent --show-error -X POST "$APP_URL/api/pre-data/snapshot" -H "Authorization: Bearer $CRON_SECRET"` and set `APP_URL` and `CRON_SECRET` in that cron job's environment.
+- The opening balance is captured on the first successful scheduled run each trading date. Later runs update that day's combined P&L and calculated balance without replacing the opening snapshot.
+
+Historical daily opening balances cannot be reconstructed before the first successful scheduled capture. If an account is disconnected, its expired session is not included; reconnect it before the next scheduled snapshot. Angel One's RMS response fields and position P&L must be confirmed against the live account response before relying on figures for financial decisions. Live order execution remains disabled.
