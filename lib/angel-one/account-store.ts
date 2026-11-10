@@ -62,6 +62,12 @@ export async function getBrokerAccount(id: string) {
   return rows[0] as StoredBrokerAccount | undefined;
 }
 
+export async function listBrokerAccountsWithSessions() {
+  const sql = await ensureBrokerAccountsTable();
+  const rows = await sql`SELECT id, role, label, client_code_masked, encrypted_session, session_expires_at, authorized_for_copy FROM eagle_trades_broker_accounts ORDER BY role, label`;
+  return rows as StoredBrokerAccount[];
+}
+
 export async function listBrokerAccounts() {
   const sql = await ensureBrokerAccountsTable();
   const rows = await sql`SELECT id, role, label, client_code_masked, session_expires_at, authorized_for_copy FROM eagle_trades_broker_accounts ORDER BY role, label`;
