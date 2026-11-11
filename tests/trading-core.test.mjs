@@ -58,6 +58,7 @@ test("followers require explicit copy authorization and an unexpired encrypted s
 test("open broker order states include pending and partial-execution states but not terminal states", () => {
   assert.equal(isOpenBrokerOrderStatus("open pending"), true);
   assert.equal(isOpenBrokerOrderStatus("trigger pending"), true);
+  assert.equal(isOpenBrokerOrderStatus("partially filled"), true);
   assert.equal(isOpenBrokerOrderStatus("complete"), false);
   assert.equal(isOpenBrokerOrderStatus("rejected"), false);
 });
