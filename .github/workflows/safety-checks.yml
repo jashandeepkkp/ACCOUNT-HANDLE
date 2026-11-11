@@ -2,7 +2,7 @@ name: EAGLE TRADES safety checks
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, feature/trade-execution-safety-completion]
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
