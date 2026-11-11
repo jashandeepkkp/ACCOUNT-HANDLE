@@ -264,3 +264,8 @@
 .dark .trade-workspace .broker-consent{background:#3a252a}
 @media(max-width:850px){.trade-workspace .manual-trade>.trade-head{grid-template-columns:1fr}.trade-workspace .trade-head p{max-width:none}.trade-workspace .execution-mode-control{grid-column:auto}}
 @media(max-width:520px){.trade-workspace .manual-trade>.trade-head{padding:16px 14px}.trade-workspace .trade-grid{padding:14px 12px 0;grid-template-columns:1fr}.trade-workspace .trade-field.wide{grid-column:auto}.trade-workspace .execution-mode-control{margin:0 12px;align-items:flex-start;flex-direction:column}.trade-workspace .trade-summary{margin:13px 12px 0}.trade-workspace .trade-actions{padding:0 12px;display:grid;grid-template-columns:1fr 1fr}.trade-workspace .trade-actions .action-btn{grid-column:1/-1}.trade-workspace .broker-consent,.trade-workspace .trade-notice,.trade-workspace .trade-warning{margin-left:12px;margin-right:12px}.trade-workspace .broker-safety-panel{margin-left:12px;margin-right:12px}.trade-workspace .broker-safety-panel .trade-actions{display:flex;grid-template-columns:1fr}}
+
+/* Keep Stop Loss and Target side by side at every viewport width */
+.trade-workspace .trade-risk-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+.trade-workspace .trade-risk-row .trade-field{min-width:0}
+@media(max-width:520px){.trade-workspace .trade-risk-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
