@@ -217,3 +217,50 @@
 .angel-chart-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--line);font-size:9px;color:var(--muted)}
 .angel-master-chart.is-dark{background:#111827}
 @media(max-width:600px){.angel-chart-canvas{height:300px}.angel-chart-toolbar{align-items:flex-start}.angel-chart-intervals{width:100%}.angel-chart-footer{display:grid}}
+
+
+/* EAGLE TRADES — refined professional manual order ticket */
+.trade-workspace{gap:18px}
+.trade-workspace .manual-trade{position:relative;overflow:visible;padding:0;border-radius:14px;border:1px solid color-mix(in srgb,var(--teal) 20%,var(--line));box-shadow:0 14px 38px rgba(20,38,62,.08)}
+.trade-workspace .manual-trade>.trade-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:20px 20px 16px;margin:0;background:linear-gradient(135deg,color-mix(in srgb,var(--teal) 8%,var(--panel)),var(--panel));border-bottom:1px solid var(--line);border-radius:14px 14px 0 0}
+.trade-workspace .trade-head h2{font-size:20px;letter-spacing:-.45px;margin:5px 0}
+.trade-workspace .trade-head p{font-size:10px;line-height:1.55;max-width:300px}
+.trade-workspace .execution-mode-control{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:0 18px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.execution-mode-control>span:first-child{font-size:10px;font-weight:900;letter-spacing:.8px;color:var(--ink);text-transform:uppercase}
+.execution-mode-switch{display:grid;grid-template-columns:auto 48px auto;align-items:center;gap:9px}
+.mode-label{font-size:9px;font-weight:900;letter-spacing:.7px;color:var(--muted)}
+.mode-label.active{color:var(--green)}
+.mode-label.live.active{color:var(--red)}
+.mode-toggle{width:48px;height:27px;padding:3px;border:1px solid #aab4c2;border-radius:30px;background:#cbd2dc;display:flex;align-items:center;transition:background .18s ease,border-color .18s ease}
+.mode-toggle-knob{width:19px;height:19px;border-radius:50%;background:white;box-shadow:0 1px 4px #0003;transition:transform .18s ease}
+.mode-toggle.is-live{justify-content:flex-start;background:var(--red);border-color:var(--red)}
+.mode-toggle.is-live .mode-toggle-knob{transform:translateX(21px)}
+.execution-mode-switch small{grid-column:1/-1;text-align:right;font-size:8px;letter-spacing:.65px;color:var(--muted);font-weight:800}
+.trade-workspace .trade-grid{padding:18px 18px 0;gap:13px}
+.trade-workspace .trade-field{gap:7px;color:var(--muted);font-size:9px;letter-spacing:.55px;text-transform:uppercase}
+.trade-workspace .trade-field input,.trade-workspace .trade-field select{min-height:41px;padding:10px 11px;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;box-shadow:0 1px 2px #14263d08;transition:border-color .15s,box-shadow .15s}
+.trade-workspace .trade-field input:focus,.trade-workspace .trade-field select:focus{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 13%,transparent);outline:none}
+.trade-workspace .trade-field strong{padding:11px;border:1px solid var(--line);border-radius:7px;background:var(--bg);font-size:10px;color:var(--ink);letter-spacing:.2px}
+.trade-workspace .trade-field small{font-size:9px;line-height:1.45;text-transform:none;letter-spacing:0}
+.trade-workspace .trade-summary{margin:16px 18px 0;padding:13px 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
+.trade-workspace .trade-summary div{min-width:0;padding-left:10px;border-left:2px solid color-mix(in srgb,var(--teal) 50%,var(--line))}
+.trade-workspace .trade-summary small{font-size:8px;letter-spacing:.9px;font-weight:800}
+.trade-workspace .trade-summary b{font-size:11px;overflow-wrap:anywhere}
+.trade-workspace .trade-actions{padding:0 18px;margin:16px 0 0;gap:9px}
+.trade-workspace .place-buy,.trade-workspace .place-sell{min-height:44px;border-radius:8px;font-size:11px;letter-spacing:.8px;box-shadow:0 4px 10px #14263d12;transition:transform .15s,filter .15s}
+.trade-workspace .place-buy{background:linear-gradient(135deg,#159b67,#087b50)}
+.trade-workspace .place-sell{background:linear-gradient(135deg,#dc5960,#b92e3a)}
+.trade-workspace .place-buy:hover,.trade-workspace .place-sell:hover{filter:brightness(1.04);transform:translateY(-1px)}
+.trade-workspace .action-btn{min-height:40px;border-radius:7px;font-size:10px}
+.trade-workspace .broker-consent{margin:12px 18px 0;padding:11px;border:1px solid color-mix(in srgb,var(--red) 25%,var(--line));border-radius:8px;background:color-mix(in srgb,var(--red) 5%,var(--panel));font-size:9px}
+.trade-workspace .trade-notice,.trade-workspace .trade-warning{margin:12px 18px 0;font-size:10px;line-height:1.55;border-radius:8px}
+.trade-workspace .trade-warning{margin-bottom:16px}
+.trade-workspace .broker-safety-panel{margin:12px 18px;padding:12px;border-radius:9px}
+.trade-workspace .broker-safety-panel:last-child{margin-bottom:18px}
+.trade-workspace .broker-safety-panel .trade-actions{padding:0;margin:0}
+.trade-workspace .manual-trade button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.dark .trade-workspace .manual-trade{box-shadow:0 14px 38px #0002}
+.dark .trade-workspace .manual-trade>.trade-head{background:linear-gradient(135deg,#1b353d,var(--panel))}
+.dark .trade-workspace .broker-consent{background:#3a252a}
+@media(max-width:850px){.trade-workspace .manual-trade>.trade-head{grid-template-columns:1fr}.trade-workspace .trade-head p{max-width:none}.trade-workspace .execution-mode-control{grid-column:auto}}
+@media(max-width:520px){.trade-workspace .manual-trade>.trade-head{padding:16px 14px}.trade-workspace .trade-grid{padding:14px 12px 0;grid-template-columns:1fr}.trade-workspace .trade-field.wide{grid-column:auto}.trade-workspace .execution-mode-control{margin:0 12px;align-items:flex-start;flex-direction:column}.trade-workspace .trade-summary{margin:13px 12px 0}.trade-workspace .trade-actions{padding:0 12px;display:grid;grid-template-columns:1fr 1fr}.trade-workspace .trade-actions .action-btn{grid-column:1/-1}.trade-workspace .broker-consent,.trade-workspace .trade-notice,.trade-workspace .trade-warning{margin-left:12px;margin-right:12px}.trade-workspace .broker-safety-panel{margin-left:12px;margin-right:12px}.trade-workspace .broker-safety-panel .trade-actions{display:flex;grid-template-columns:1fr}}
