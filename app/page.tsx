@@ -72,7 +72,9 @@ export default function Home(){
     
     <label className="trade-field">Order type<select value={tradeType} onChange={e=>setTradeType(e.target.value)}><option>MARKET</option><option>LIMIT</option></select></label>
     <label className="trade-field">Product<select value={tradeProduct} onChange={e=>setTradeProduct(e.target.value)}><option>MIS</option><option>CNC</option></select></label>
-    <label className="trade-field">Quantity<input type="number" min="1" value={tradeQty} onChange={e=>setTradeQty(Math.max(1,Number(e.target.value)))}/></label>\n    <label className="trade-field">Stop loss (₹)<input type="number" min="0.05" step="0.05" value={tradeStopLoss} onChange={e=>setTradeStopLoss(e.target.value)} placeholder="Optional"/></label>\n    <label className="trade-field">Target (₹)<input type="number" min="0.05" step="0.05" value={tradeTarget} onChange={e=>setTradeTarget(e.target.value)} placeholder="Optional"/></label>
+    <label className="trade-field">Quantity<input type="number" min="1" value={tradeQty} onChange={e=>setTradeQty(Math.max(1,Number(e.target.value)))}/></label>
+    <label className="trade-field">Stop loss (₹)<input type="number" min="0.05" step="0.05" value={tradeStopLoss} onChange={e=>setTradeStopLoss(e.target.value)} placeholder="Optional"/></label>
+    <label className="trade-field">Target (₹)<input type="number" min="0.05" step="0.05" value={tradeTarget} onChange={e=>setTradeTarget(e.target.value)} placeholder="Optional"/></label>
     {tradeType==="LIMIT"&&<label className="trade-field">Limit price (₹)<input type="number" min="0.05" step="0.05" value={tradePrice} onChange={e=>setTradePrice(e.target.value)} placeholder="0.00"/></label>}
    </div>
    <div className="trade-summary"><div><small>ACCOUNT</small><b>MASTER · ANGEL ONE</b></div><div><small>ORDER</small><b>{tradeSide} · {tradeType} · {tradeProduct}</b></div><div><small>QUANTITY</small><b>{tradeQty}</b></div>{tradeType==="LIMIT"&&<div><small>LIMIT PRICE</small><b>₹{tradePrice||"—"}</b></div>}<div><small>STOP LOSS</small><b>{tradeStopLoss?"₹"+tradeStopLoss:"—"}</b></div><div><small>TARGET</small><b>{tradeTarget?"₹"+tradeTarget:"—"}</b></div></div>
