@@ -10,13 +10,15 @@ const master = [
   { token: "3045", symbol: "SBIN-EQ", name: "SBIN", expiry: "", strike: "-1.000000", lotsize: "1", instrumenttype: "", exch_seg: "nse_cm", tick_size: "5.000000" },
   { token: "2885", symbol: "RELIANCE-EQ", name: "RELIANCE", expiry: "", strike: "-1.000000", lotsize: "1", instrumenttype: "", exch_seg: "nse_cm", tick_size: "5.000000" },
   { token: "999", symbol: "NIFTY26NOVFUT", name: "NIFTY", expiry: "26NOV2026", strike: "-1", lotsize: "75", instrumenttype: "FUTIDX", exch_seg: "nse_fo", tick_size: "5" },
-  { token: "888", symbol: "SBIN-EQ", name: "SBIN", expiry: "", strike: "-1", lotsize: "1", instrumenttype: "", exch_seg: "nfo" }
+  { token: "888", symbol: "SBIN-EQ", name: "SBIN", expiry: "", strike: "-1", lotsize: "1", instrumenttype: "", exch_seg: "nfo" },
+  { token: "5001", symbol: "RELIANCE-A", name: "RELIANCE", expiry: "", strike: "-1", lotsize: "1", instrumenttype: "", exch_seg: "bse_cm" }
 ];
 
 test("instrument master accepts cash equity and rejects derivative segments", () => {
   assert.equal(normalizeCashEquity(master[0]).token, "3045");
   assert.equal(normalizeCashEquity(master[2]), null);
   assert.equal(normalizeCashEquity(master[3]), null);
+  assert.equal(normalizeCashEquity(master[4]).exchange, "BSE");
 });
 
 test("instrument search is exchange-scoped and returns canonical broker symbol/token", () => {
@@ -24,7 +26,7 @@ test("instrument search is exchange-scoped and returns canonical broker symbol/t
   assert.equal(found.length, 1);
   assert.equal(found[0].symbol, "SBIN-EQ");
   assert.equal(found[0].token, "3045");
-  assert.equal(searchCashEquities(master, "sbin", "BSE").length, 0);
+  assert.equal(searchCashEquities(master, "reliance", "BSE")[0].token, "5001");
 });
 
 test("order selection must exactly match master symbol, exchange and token", () => {
