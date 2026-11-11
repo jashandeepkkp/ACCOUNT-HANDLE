@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import AngelOneMasterLogin from "@/components/AngelOneMasterLogin";
 import ConnectedFollowerAccounts from "@/components/ConnectedFollowerAccounts";
+import AngelOneMasterChart from "@/components/AngelOneMasterChart";
 
 import { useCloudState } from "@/lib/neon/use-cloud-state";
 
@@ -18,42 +19,6 @@ const seed:Position[] = [
  {id:8,symbol:"TCS",exchange:"NSE",product:"CNC",qty:0,avg:3920,ltp:3884,pnl:-360,account:"Beta",stopLoss:null,target:null,state:"CLOSED"}
 ];
 const money=(n:number)=>new Intl.NumberFormat("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
-function TradingViewChart({symbol,theme}:{symbol:string;theme:"light"|"dark"}){
- const containerRef=useRef<HTMLDivElement|null>(null);
- useEffect(()=>{
-  const container=containerRef.current;
-  if(!container)return;
-  container.innerHTML="";
-  const widget=document.createElement("div");
-  widget.className="tradingview-widget-container__widget";
-  widget.style.height="calc(100% - 28px)";
-  widget.style.width="100%";
-  const attribution=document.createElement("div");
-  attribution.className="tradingview-attribution";
-  const link=document.createElement("a");
-  link.href="https://www.tradingview.com/";
-  link.target="_blank";
-  link.rel="noopener nofollow";
-  link.textContent="Charts provided by TradingView";
-  attribution.appendChild(link);
-  const script=document.createElement("script");
-  script.type="text/javascript";
-  script.src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-  script.async=true;
-  script.text=JSON.stringify({
-   autosize:true,symbol,interval:"15",timezone:"Asia/Kolkata",theme,style:"1",locale:"en",
-   allow_symbol_change:true,calendar:false,details:true,hide_side_toolbar:false,
-   hide_top_toolbar:false,hide_legend:false,hide_volume:false,hotlist:false,
-   save_image:true,withdateranges:true,studies:[],support_host:"https://www.tradingview.com"
-  });
-  container.appendChild(widget);
-  container.appendChild(attribution);
-  container.appendChild(script);
-  return ()=>{container.innerHTML="";};
- },[symbol,theme]);
- return <div className="tradingview-live-chart" ref={containerRef} aria-label={`TradingView market chart for ${symbol}`}/>;
-}
-
 export default function Home(){
  const { value: positions, setValue: setPositions } = useCloudState<Position[]>("positions", seed);
  const { value: orderEvents, setValue: setOrderEvents } = useCloudState<OrderEvent[]>("order_events", []);
@@ -95,9 +60,9 @@ export default function Home(){
   <nav className="tabs">{["Summary","Positions","PRE DATA","Portfolio","Trade","Notifications"].map((t,i)=><button key={t} className={tab===t?"tab active":"tab"} onClick={()=>setTab(t)}><span>{["▦","◉","▤","▣","↗","♧"][i]}</span>{t}{t==="Notifications"&&<em>{orderEvents.length}</em>}</button>)}</nav>
   {tab!=="Summary"&&<div className="page-title"><div><div className="eyebrow">PORTFOLIO MONITOR / LIVE VIEW</div><h1>{tab}</h1><p>Monitor positions across linked trading accounts.</p></div><div className="market-state"><span className="pulse"></span> PAPER MARKET <b>SIMULATED</b><small>Updated just now</small></div></div>}
   {tab==="Trade" ? <><aside className="trade-account-corner"><AngelOneMasterLogin/></aside><div className="trade-workspace"><section className="card trade-chart">
-   <div className="chart-heading"><div><div className="eyebrow">LIVE MARKET CHART / TRADINGVIEW</div><h2>XAUUSD <span>GOLD / US DOLLAR · OANDA</span></h2><p>Interactive market chart · data availability and delays depend on exchange permissions</p></div><span className="paper-pill">MARKET DATA ONLY</span></div>
-   <TradingViewChart symbol="OANDA:XAUUSD" theme={dark?"dark":"light"}/>
-   <div className="chart-disclaimer">TradingView chart data is for market viewing only. It does not place orders or guarantee real-time exchange quotes. Confirm live prices with your broker before trading.</div>
+   <div className="chart-heading"><div><div className="eyebrow">ANGEL ONE MASTER / BROKER CANDLES</div><h2>{tradeSymbol} <span>{tradeExchange} · AUTHENTICATED MASTER ACCOUNT</span></h2><p>Historical OHLC candles loaded using the connected Angel One Master session</p></div><span className="paper-pill">MASTER BROKER DATA</span></div>
+   <AngelOneMasterChart symbol={tradeSymbol} exchange={tradeExchange as "NSE"|"BSE"} theme={dark?"dark":"light"}/>
+   <div className="chart-disclaimer">Chart candles are fetched from Angel One using the authenticated Master account and verified instrument token. Data refreshes periodically; this is not a tick-by-tick streaming feed. Verify live prices in the Angel One app before placing orders.</div>
   </section><section className="card manual-trade">
    <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place a simulated order from the master account. Live broker execution is not connected.</p></div><label className="trade-field">Execution mode<select value={tradeExecutionMode} onChange={e=>{setTradeExecutionMode(e.target.value as "PAPER"|"LIVE");setLiveOrderConfirmed(false);}}><option value="PAPER">PAPER · SIMULATED</option><option value="LIVE">LIVE · REAL ANGEL ONE</option></select></label><span className={tradeExecutionMode==="LIVE"?"negative":"paper-pill"}>{tradeExecutionMode==="LIVE"?"REAL MONEY MODE":"PAPER MODE"}</span></div>
    <div className="trade-grid">

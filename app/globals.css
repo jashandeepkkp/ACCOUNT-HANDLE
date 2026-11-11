@@ -206,3 +206,14 @@
 .broker-safety-list .pending{color:var(--red)}
 .broker-safety-panel>strong{font-size:10px;letter-spacing:.8px;color:var(--red)}
 @media(max-width:600px){.broker-safety-list{grid-template-columns:1fr}}
+
+/* Angel One authenticated Master candlestick chart */
+.angel-master-chart{width:100%;min-height:330px;border:1px solid var(--line);border-radius:8px;background:var(--panel);overflow:hidden}
+.angel-chart-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line)}
+.angel-chart-toolbar>div:first-child{display:grid;gap:4px}.angel-chart-toolbar b{font-size:13px;letter-spacing:.5px}.angel-chart-toolbar span{font-size:9px;color:var(--muted);letter-spacing:.8px}
+.angel-chart-intervals{display:flex;gap:4px;flex-wrap:wrap}.angel-chart-intervals button{border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--muted);padding:6px 9px;font-size:10px;font-weight:800;cursor:pointer}.angel-chart-intervals button.active{background:var(--teal);border-color:var(--teal);color:white}
+.angel-chart-canvas{display:block;width:100%;height:360px}
+.angel-chart-message{min-height:300px;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted);font-size:12px}
+.angel-chart-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--line);font-size:9px;color:var(--muted)}
+.angel-master-chart.is-dark{background:#111827}
+@media(max-width:600px){.angel-chart-canvas{height:300px}.angel-chart-toolbar{align-items:flex-start}.angel-chart-intervals{width:100%}.angel-chart-footer{display:grid}}
