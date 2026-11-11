@@ -77,8 +77,10 @@ async function processSource(sql:any,source:Record<string,unknown>,followers:any
  return results;
 }
 export async function POST(request:NextRequest){
- if(!await getSession())return NextResponse.json({error:"Application login required."},{status:401});
- if(!sameOrigin(request))return NextResponse.json({error:"Same-origin request required."},{status:403});
+ const cronSecret=process.env.CRON_SECRET;
+ const cronAuthorized=Boolean(cronSecret&&cronSecret.length>=24&&request.headers.get("authorization")==="Bearer "+cronSecret);
+ if(!cronAuthorized&&!await getSession())return NextResponse.json({error:"Application login required."},{status:401});
+ if(!cronAuthorized&&!sameOrigin(request))return NextResponse.json({error:"Same-origin request required."},{status:403});
  try{
   const body=await request.json();if(body?.confirmCopySync!==true)return NextResponse.json({error:"Explicit start/continue confirmation required."},{status:400});
   if(process.env.ANGELONE_LIVE_COPY_ENABLED!=="true"||!liveConfigReady())return NextResponse.json({liveCopyEnabled:false,error:"Live Master-to-Follower copy is disabled or its broker, static-IP, encryption and risk gates are incomplete."},{status:403});
