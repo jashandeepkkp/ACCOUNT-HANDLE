@@ -291,3 +291,28 @@
 .trade-workspace>.manual-trade .execution-mode-control{display:none}
 @media(max-width:1050px){.trade-workspace{grid-template-columns:minmax(0,1fr) 320px}}
 @media(max-width:760px){.trade-workspace{grid-template-columns:minmax(0,1fr);grid-template-areas:"rail" "chart" "ticket"}.trade-workspace>.trade-control-rail{grid-template-columns:1fr}.trade-control-rail .trade-actions{display:grid;grid-template-columns:1fr}.trade-control-rail .trade-actions button{width:100%}}
+
+
+/* Exact screenshot arrangement: controls row and Master login above full-width chart */
+.trade-top-layout{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(300px,430px)!important;grid-template-areas:"controls login"!important;gap:12px!important;align-items:stretch!important;margin:0 0 12px!important}
+.trade-top-layout>.trade-control-rail{grid-area:controls!important;display:grid!important;grid-template-columns:minmax(190px,.85fr) minmax(240px,1.15fr) minmax(260px,1.25fr)!important;gap:10px!important;align-items:stretch!important;min-width:0}
+.trade-top-layout>.trade-account-corner{grid-area:login!important;display:flex!important;align-items:stretch!important;justify-content:stretch!important;margin:0!important;min-width:0}
+.trade-top-layout>.trade-account-corner .master-login-widget{width:100%!important;max-width:none!important;margin:0!important}
+.trade-top-layout .trade-control-card{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-width:0!important;margin:0!important;padding:12px!important;border:1px solid var(--line)!important;border-radius:9px!important;background:var(--panel)!important;box-shadow:0 3px 12px #15283d08}
+.trade-top-layout .trade-control-heading{display:grid;gap:5px;min-width:0}
+.trade-top-layout .trade-control-heading b,.trade-top-layout .broker-safety-panel>div:first-child b{font-size:10px;letter-spacing:.55px;line-height:1.35}
+.trade-top-layout .execution-mode-switch{display:grid;grid-template-columns:auto 48px auto;align-items:center;gap:7px;min-width:0}
+.trade-top-layout .execution-mode-switch small{grid-column:1/-1;text-align:center;font-size:8px}
+.trade-top-layout .broker-safety-panel>div:first-child{display:grid;gap:5px;min-width:0}
+.trade-top-layout .broker-safety-panel>div:first-child span{font-size:9px;line-height:1.4;color:var(--muted)}
+.trade-top-layout .trade-actions{display:flex;flex-direction:column;gap:6px;padding:0;margin:0;min-width:92px}
+.trade-top-layout .trade-actions button{width:100%;min-height:34px;padding:7px 9px;font-size:9px}
+.trade-top-layout .trade-control-card p{font-size:9px;line-height:1.4;margin:0}
+.trade-top-layout .paper-pill{white-space:nowrap}
+.trade-workspace{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-areas:none!important;gap:16px!important;align-items:start!important}
+.trade-workspace>.trade-chart,.trade-workspace>.manual-trade{grid-area:auto!important;min-width:0}
+.trade-workspace>.trade-chart{width:100%}
+.trade-workspace>.manual-trade{width:100%}
+.trade-workspace>.manual-trade .execution-mode-control{display:none!important}
+@media(max-width:1050px){.trade-top-layout{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"controls" "login"!important}.trade-top-layout>.trade-control-rail{grid-template-columns:repeat(3,minmax(0,1fr))!important}.trade-top-layout>.trade-account-corner{justify-content:flex-end!important}.trade-top-layout>.trade-account-corner .master-login-widget{max-width:430px!important}}
+@media(max-width:760px){.trade-top-layout>.trade-control-rail{grid-template-columns:1fr!important}.trade-top-layout .trade-control-card{align-items:flex-start!important}.trade-top-layout .trade-actions{flex-direction:row;flex-wrap:wrap}.trade-top-layout .trade-actions button{flex:1 1 120px}.trade-top-layout>.trade-account-corner .master-login-widget{max-width:none!important}}
