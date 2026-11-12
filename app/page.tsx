@@ -68,7 +68,7 @@ export default function Home(){
    <AngelOneMasterChart symbol={tradeSymbol} exchange={tradeExchange as "NSE"|"BSE"} theme={dark?"dark":"light"}/>
    <div className="chart-disclaimer">Chart candles are fetched from Angel One using the authenticated Master account and verified instrument token. Data refreshes periodically; this is not a tick-by-tick streaming feed. Verify live prices in the Angel One app before placing orders.</div>
   </section><section className="card manual-trade">
-   <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place BUY or SELL orders directly from your authenticated Angel One Master account.</p></div>
+   <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place BUY or SELL orders directly from your authenticated Angel One Master account.</p></div></div>
    <div className="trade-grid">
     <div className="trade-field"><span>Trading account</span><strong>MASTER ACCOUNT · ANGEL ONE</strong><small>Only the currently authenticated Master account is used here.</small></div>
     
