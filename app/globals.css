@@ -269,3 +269,25 @@
 .trade-workspace .trade-risk-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
 .trade-workspace .trade-risk-row .trade-field{min-width:0}
 @media(max-width:520px){.trade-workspace .trade-risk-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+
+
+/* Trade tab control rail: master login, execution mode, copy and emergency controls */
+.trade-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,390px);grid-template-areas:"chart rail" "ticket ticket";align-items:start;gap:16px}
+.trade-workspace>.trade-chart{grid-area:chart;min-width:0}
+.trade-workspace>.trade-control-rail{grid-area:rail;display:grid;gap:12px;min-width:0;align-content:start}
+.trade-workspace>.manual-trade{grid-area:ticket;min-width:0}
+.trade-control-rail .master-login-widget{width:100%;max-width:none;margin:0}
+.trade-control-rail .trade-control-card{width:100%;min-width:0;margin:0;padding:14px;border:1px solid var(--line);border-radius:9px;background:var(--panel);display:grid;gap:12px}
+.trade-control-rail .trade-control-heading{display:grid;gap:5px}
+.trade-control-rail .trade-control-heading b,.trade-control-rail .broker-safety-panel>div:first-child b{font-size:11px;letter-spacing:.65px}
+.trade-control-rail .execution-mode-switch{display:grid;grid-template-columns:auto 48px auto;justify-content:start;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:7px;background:var(--bg)}
+.trade-control-rail .execution-mode-switch small{grid-column:1/-1;text-align:left}
+.trade-control-rail .trade-actions{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0}
+.trade-control-rail .trade-actions button{flex:1 1 130px;min-width:0}
+.trade-control-rail .broker-safety-panel p{margin:0;font-size:10px;line-height:1.5;color:var(--muted)}
+.trade-control-rail .broker-safety-panel>div:first-child span{font-size:10px;line-height:1.5;color:var(--muted)}
+.trade-control-rail .paper-pill{justify-self:start}
+.trade-workspace>.manual-trade>.trade-head{grid-template-columns:1fr}
+.trade-workspace>.manual-trade .execution-mode-control{display:none}
+@media(max-width:1050px){.trade-workspace{grid-template-columns:minmax(0,1fr) 320px}}
+@media(max-width:760px){.trade-workspace{grid-template-columns:minmax(0,1fr);grid-template-areas:"rail" "chart" "ticket"}.trade-workspace>.trade-control-rail{grid-template-columns:1fr}.trade-control-rail .trade-actions{display:grid;grid-template-columns:1fr}.trade-control-rail .trade-actions button{width:100%}}
