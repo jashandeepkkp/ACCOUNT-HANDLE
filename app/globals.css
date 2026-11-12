@@ -343,3 +343,10 @@
 .trade-top-layout .trade-actions button{min-width:0;min-height:32px;padding:6px 8px;font-size:8px;white-space:normal;line-height:1.25}
 @media(max-width:1100px){.trade-workspace{grid-template-columns:minmax(0,1.35fr) minmax(300px,.95fr)!important;gap:10px!important}.trade-top-layout{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"controls" "login"!important}.trade-top-layout>.trade-control-rail{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:760px){.trade-workspace{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"chart" "ticket"!important}.trade-workspace>.manual-trade .trade-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.trade-top-layout>.trade-control-rail{grid-template-columns:1fr!important}.trade-top-layout .trade-control-card{min-height:0}.trade-top-layout .trade-actions{max-width:none;flex-direction:row}.trade-top-layout .trade-actions button{flex:1 1 110px}}
+
+
+/* Compact top control buttons: prevent oversized emergency/copy actions */
+.trade-top-layout .trade-actions{width:auto!important;max-width:150px!important;min-width:0!important;align-items:stretch!important;justify-content:center!important}
+.trade-top-layout .trade-actions button{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:auto!important;min-height:34px!important;max-height:40px!important;flex:0 1 auto!important;padding:7px 9px!important;font-size:9px!important;line-height:1.2!important;white-space:normal!important;border-radius:6px!important}
+.trade-top-layout .trade-control-card{min-height:78px!important}
+@media(max-width:760px){.trade-top-layout .trade-actions{width:100%!important;max-width:none!important}.trade-top-layout .trade-actions button{width:auto!important;min-height:36px!important;max-height:42px!important;flex:1 1 120px!important}}
