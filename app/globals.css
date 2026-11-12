@@ -316,3 +316,28 @@
 .trade-workspace>.manual-trade .execution-mode-control{display:none!important}
 @media(max-width:1050px){.trade-top-layout{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"controls" "login"!important}.trade-top-layout>.trade-control-rail{grid-template-columns:repeat(3,minmax(0,1fr))!important}.trade-top-layout>.trade-account-corner{justify-content:flex-end!important}.trade-top-layout>.trade-account-corner .master-login-widget{max-width:430px!important}}
 @media(max-width:760px){.trade-top-layout>.trade-control-rail{grid-template-columns:1fr!important}.trade-top-layout .trade-control-card{align-items:flex-start!important}.trade-top-layout .trade-actions{flex-direction:row;flex-wrap:wrap}.trade-top-layout .trade-actions button{flex:1 1 120px}.trade-top-layout>.trade-account-corner .master-login-widget{max-width:none!important}}
+
+
+/* Trade workspace: chart and manual order ticket side by side */
+.trade-workspace{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,410px)!important;grid-template-areas:"chart ticket"!important;align-items:start!important;gap:16px!important}
+.trade-workspace>.trade-chart{grid-area:chart!important;width:100%;min-width:0}
+.trade-workspace>.manual-trade{grid-area:ticket!important;width:100%;min-width:0;max-width:none!important}
+.trade-workspace>.manual-trade>.trade-head{grid-template-columns:minmax(0,1fr)!important;padding:16px 16px 13px}
+.trade-workspace>.manual-trade .trade-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px 14px 0;gap:11px}
+.trade-workspace>.manual-trade .trade-field.wide{grid-column:1/-1}
+.trade-workspace>.manual-trade .trade-risk-row{grid-column:1/-1;gap:9px}
+.trade-workspace>.manual-trade .trade-summary{margin:13px 14px 0;padding:11px;gap:9px}
+.trade-workspace>.manual-trade .trade-actions{padding:0 14px;margin-top:13px;gap:8px}
+.trade-workspace>.manual-trade .place-buy,.trade-workspace>.manual-trade .place-sell{min-height:42px;padding:10px 12px;font-size:10px}
+.trade-workspace>.manual-trade .broker-safety-panel{margin:11px 14px;padding:11px}
+.trade-workspace>.manual-trade .broker-consent,.trade-workspace>.manual-trade .trade-notice,.trade-workspace>.manual-trade .trade-warning{margin-left:14px;margin-right:14px}
+.trade-top-layout .trade-control-card{min-height:88px!important;box-sizing:border-box}
+.trade-top-layout .trade-control-heading b,.trade-top-layout .broker-safety-panel>div:first-child b{font-size:10px!important;line-height:1.35!important;overflow-wrap:anywhere}
+.trade-top-layout .trade-actions{min-width:0!important;flex:0 1 116px}
+.trade-top-layout .trade-actions button{box-sizing:border-box;width:100%;min-width:0;min-height:36px!important;padding:8px 10px!important;border-radius:6px!important;font-size:9px!important;font-weight:800;line-height:1.25;white-space:normal}
+.trade-top-layout .mode-toggle{width:44px!important;height:25px!important;min-height:25px!important;padding:2px!important}
+.trade-top-layout .mode-toggle-knob{width:19px;height:19px}
+.trade-top-layout .mode-toggle.is-live .mode-toggle-knob{transform:translateX(19px)}
+@media(max-width:1120px){.trade-workspace{grid-template-columns:minmax(0,1fr) minmax(310px,360px)!important}.trade-workspace>.manual-trade .trade-grid{gap:9px}.trade-top-layout>.trade-control-rail{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:900px){.trade-workspace{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"chart" "ticket"!important}.trade-workspace>.manual-trade{max-width:none!important}.trade-workspace>.manual-trade .trade-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.trade-top-layout>.trade-control-rail{grid-template-columns:1fr!important}.trade-top-layout .trade-control-card{min-height:72px!important}.trade-workspace>.manual-trade .trade-grid{grid-template-columns:1fr;padding:12px 12px 0}.trade-workspace>.manual-trade .trade-field.wide,.trade-workspace>.manual-trade .trade-risk-row{grid-column:1/-1}.trade-workspace>.manual-trade .trade-summary{margin-left:12px;margin-right:12px}.trade-workspace>.manual-trade .trade-actions{padding:0 12px}.trade-workspace>.manual-trade .broker-safety-panel{margin-left:12px;margin-right:12px}}
