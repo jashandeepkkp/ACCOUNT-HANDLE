@@ -350,3 +350,18 @@
 .trade-top-layout .trade-actions button{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:auto!important;min-height:34px!important;max-height:40px!important;flex:0 1 auto!important;padding:7px 9px!important;font-size:9px!important;line-height:1.2!important;white-space:normal!important;border-radius:6px!important}
 .trade-top-layout .trade-control-card{min-height:78px!important}
 @media(max-width:760px){.trade-top-layout .trade-actions{width:100%!important;max-width:none!important}.trade-top-layout .trade-actions button{width:auto!important;min-height:36px!important;max-height:42px!important;flex:1 1 120px!important}}
+
+
+/* Angel One Master funds panel inside the Manual Trading ticket */
+.trade-workspace>.manual-trade .master-equity-panel{margin:12px 13px 0;padding:11px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface-soft,var(--surface));min-width:0}
+.master-equity-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.master-equity-heading>div{display:flex;flex-direction:column;gap:3px}
+.master-equity-heading>div>b{font-size:10px;letter-spacing:.07em}
+.master-equity-heading button{border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text);width:28px;height:26px;cursor:pointer}
+.master-equity-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.master-equity-metrics>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.master-equity-metrics small{font-size:8px;color:var(--muted);letter-spacing:.06em}
+.master-equity-metrics strong{font-size:15px;font-weight:750;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.master-equity-updated,.master-equity-error{font-size:8px;line-height:1.4;color:var(--muted);margin:8px 0 0}
+.master-equity-error{color:var(--negative,#c44)}
+@media(max-width:420px){.master-equity-metrics strong{font-size:13px}}
