@@ -1,0 +1,12 @@
+services:
+  - type: cron
+    name: eagle-trades-copy-sync
+    runtime: node
+    schedule: "*/1 * * * *"
+    buildCommand: npm ci
+    startCommand: node scripts/copy-sync-cron.mjs
+    envVars:
+      - key: EAGLE_TRADES_URL
+        sync: false
+      - key: CRON_SECRET
+        sync: false
