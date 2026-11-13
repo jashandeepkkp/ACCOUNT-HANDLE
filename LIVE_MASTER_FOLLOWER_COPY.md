@@ -56,3 +56,17 @@ Set `EAGLE_TRADES_URL` to the deployed service URL and `CRON_SECRET` to the same
 8. Do not enable the live flags until the paper tests, controlled broker test account, redacted real payload checks, static IP and operational cancellation/recovery procedure have been independently verified.
 
 **Default behavior remains fail-closed. This PR does not authorize or place a live order during development or CI.**
+
+
+## Render Cron Job (included with this branch)
+
+Deploy `render-copy-cron.yaml` as a separate Render Blueprint/Cron service, or create a Cron Job with the same settings:
+
+- **Schedule:** every minute (`*/1 * * * *`)
+- **Build command:** `npm ci`
+- **Start command:** `node scripts/copy-sync-cron.mjs`
+- **Environment:** `EAGLE_TRADES_URL` = HTTPS URL of the existing EAGLE TRADES web service; `CRON_SECRET` = the same random secret on both the cron service and web service (at least 24 characters).
+
+The runner sends one authenticated copy-sync request and exits. It never prints the secret or full broker response. Failed HTTP calls produce a non-zero job exit. Render cron monitoring is required because the dashboard button performs only a one-time sync.
+
+**This adds the scheduler only. It does not turn on live orders or certify broker behavior.** Keep `ANGELONE_LIVE_TRADING_ENABLED=false` and `ANGELONE_LIVE_COPY_ENABLED=false` until controlled broker tests and the live-safety checks are complete.
