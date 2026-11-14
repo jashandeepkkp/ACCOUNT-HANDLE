@@ -1,0 +1,6 @@
+import {NextRequest,NextResponse} from "next/server";
+import {getSession} from "@/lib/server/session";
+import {indexOptionExpiries,searchVerifiedIndexOptions,optionInstrumentMasterLoadedAt} from "@/lib/angel-one/index-options";
+export const runtime="nodejs";export const dynamic="force-dynamic";
+const UNDERLYINGS=["NIFTY","BANKNIFTY","FINNIFTY","SENSEX"];
+export async function GET(request:NextRequest){if(!await getSession())return NextResponse.json({error:"Application login required."},{status:401});const underlying=(request.nextUrl.searchParams.get("underlying")??"NIFTY").toUpperCase();if(!UNDERLYINGS.includes(underlying))return NextResponse.json({error:"Only NIFTY, BANKNIFTY, FINNIFTY and SENSEX index options are supported."},{status:400});try{const expiries=await indexOptionExpiries(underlying);const expiry=request.nextUrl.searchParams.get("expiry")??"";const optionType=request.nextUrl.searchParams.get("type")??"";const contracts=expiry&&optionType?await searchVerifiedIndexOptions(underlying,expiry,optionType):[];return NextResponse.json({underlying,expiries,contracts,source:"Angel One OpenAPI instrument master",loadedAt:new Date(optionInstrumentMasterLoadedAt()??Date.now()).toISOString()},{headers:{"Cache-Control":"no-store"}});}catch(e){return NextResponse.json({error:e instanceof Error?e.message:"Index option lookup failed."},{status:503});}}
