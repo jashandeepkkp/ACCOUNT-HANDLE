@@ -1,4 +1,4 @@
-const base = String(process.env.EAGLE_TRADES_URL ?? "").trim().replace(/\\/+$/, "");
+const base = String(process.env.EAGLE_TRADES_URL ?? "").trim().replace(/\/+$/, "");
 const secret = String(process.env.CRON_SECRET ?? "");
 
 if (!base) throw new Error("EAGLE_TRADES_URL is required.");
