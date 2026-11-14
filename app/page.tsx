@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import AngelOneMasterLogin from "@/components/AngelOneMasterLogin";
 import ConnectedFollowerAccounts from "@/components/ConnectedFollowerAccounts";
 import AngelOneMasterChart from "@/components/AngelOneMasterChart";
-import MasterAccountEquity from "@/components/MasterAccountEquity";
 
 import { useCloudState } from "@/lib/neon/use-cloud-state";
 
@@ -70,7 +69,6 @@ export default function Home(){
    <div className="chart-disclaimer">Chart candles are fetched from Angel One using the authenticated Master account and verified instrument token. Data refreshes periodically; this is not a tick-by-tick streaming feed. Verify live prices in the Angel One app before placing orders.</div>
   </section><section className="card manual-trade">
    <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place BUY or SELL orders directly from your authenticated Angel One Master account.</p></div>
-   <MasterAccountEquity />
    <div className="trade-grid">
 
     <div className="trade-field wide instrument-picker"><label>Instrument / Trading symbol<input value={tradeSymbol} onChange={e=>{setTradeSymbol(e.target.value.toUpperCase());setSelectedInstrument(null);}} placeholder="Search NSE/BSE cash equity symbol" autoComplete="off"/></label>{instrumentLoading&&<small>Searching Angel One instrument master…</small>}{instrumentError&&<small className="negative">{instrumentError}</small>}{instrumentResults.length>0&&<div className="instrument-results">{instrumentResults.map(item=><button type="button" key={item.exchange+item.token} onClick={()=>{setSelectedInstrument(item);setTradeSymbol(item.symbol);setTradeExchange(item.exchange);setInstrumentResults([]);setTradeMessage("Verified "+item.exchange+" instrument · token "+item.token);}}><b>{item.symbol}</b><span>{item.name} · {item.exchange} · token {item.token}</span></button>)}</div>}{selectedInstrument&&<small className="positive">✓ Verified by Angel One instrument master · {selectedInstrument.exchange} · token {selectedInstrument.token}</small>}</div>
