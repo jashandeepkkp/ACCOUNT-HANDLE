@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   normalizeCashEquity, searchCashEquities, validateInstrumentSelection,
   brokerProductType, evaluateRisk, isEligibleFollower, isOpenBrokerOrderStatus,
-  normalizePlaceOrderResponse, makeCopyOrderTag
+  normalizePlaceOrderResponse, makeCopyOrderTag, evaluateCopyMarketPrice
 } from "../lib/angel-one/trading-core.mjs";
 
 const master = [
@@ -75,4 +75,12 @@ test("copy order tags are stable and bounded to Angel One's tag limit", () => {
   assert.equal(a, makeCopyOrderTag("key-123", "follower-a"));
   assert.notEqual(a, makeCopyOrderTag("key-123", "follower-b"));
   assert.ok(a.length < 20);
+});
+
+
+test("market copy fails closed without valid fill price, LTP and slippage limit", () => {
+  assert.equal(evaluateCopyMarketPrice({ masterAveragePrice: 100, followerLtp: 100.2, maxDeviationBps: 50 }).allowed, true);
+  assert.equal(evaluateCopyMarketPrice({ masterAveragePrice: 100, followerLtp: 101, maxDeviationBps: 50 }).reason, "MARKET_COPY_PRICE_DEVIATION");
+  assert.equal(evaluateCopyMarketPrice({ masterAveragePrice: 0, followerLtp: 100, maxDeviationBps: 50 }).allowed, false);
+  assert.equal(evaluateCopyMarketPrice({ masterAveragePrice: 100, followerLtp: 100, maxDeviationBps: 0 }).allowed, false);
 });

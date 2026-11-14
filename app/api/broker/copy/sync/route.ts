@@ -5,7 +5,7 @@ import {openSession} from "@/lib/angel-one/session";
 import {smartApiRequest} from "@/lib/angel-one/smartapi";
 import {liveDb,liveConfigReady} from "@/lib/angel-one/live-trading";
 import {findVerifiedInstrument} from "@/lib/angel-one/instrument-master";
-import {evaluateRisk,isEligibleFollower,makeCopyOrderTag} from "@/lib/angel-one/trading-core.mjs";
+import {evaluateRisk,evaluateCopyMarketPrice,isEligibleFollower,makeCopyOrderTag} from "@/lib/angel-one/trading-core.mjs";
 export const runtime="nodejs";export const dynamic="force-dynamic";
 function sameOrigin(r:NextRequest){const o=r.headers.get("origin"),h=r.headers.get("x-forwarded-host")??r.headers.get("host");try{return Boolean(o&&h&&new URL(o).host===h)}catch{return false}}
 function indiaDay(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kolkata",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());}
@@ -47,7 +47,13 @@ async function processSource(sql:any,source:Record<string,unknown>,followers:any
    if(!isEligibleFollower(account)||!session)throw new Error("Follower copy consent or broker session is unavailable.");
    if(sourceType==="LIMIT"&&(!Number.isFinite(price)||price<=0))throw new Error("Master limit price is invalid.");
    if(sourceType==="LIMIT"&&(!Number.isFinite(instrument.tickSize)||instrument.tickSize<=0||Math.abs(Math.round(price/instrument.tickSize)*instrument.tickSize-price)>0.000001))throw new Error("Master limit price does not match instrument tick size.");
-   if(sourceType==="MARKET")referencePrice=await marketReference(session,exchange,symbol,token);
+   if(sourceType==="MARKET"){
+    const masterAveragePrice=Number(source.averageprice??source.averagePrice);
+    referencePrice=await marketReference(session,exchange,symbol,token);
+    const maxDeviationBps=Number(process.env.COPY_MAX_PRICE_DEVIATION_BPS);
+    const priceGuard=evaluateCopyMarketPrice({masterAveragePrice,followerLtp:referencePrice,maxDeviationBps});
+    if(!priceGuard.allowed)throw new Error("Market copy blocked by price-deviation guard: "+priceGuard.reason);
+   }
    const [positions,count]=await Promise.all([
     smartApiRequest<unknown>("/rest/secure/angelbroking/order/v1/getPosition","GET",session),
     sql`SELECT count(*)::int AS n FROM eagle_trades_live_orders WHERE account_id=${account.id} AND created_at>=${indiaDay()}::date AND created_at<(${indiaDay()}::date+interval '1 day') AND status NOT IN ('REJECTED','BLOCKED_COPY')`
@@ -57,6 +63,7 @@ async function processSource(sql:any,source:Record<string,unknown>,followers:any
    saved=await sql`INSERT INTO eagle_trades_live_orders(id,idempotency_key,account_id,order_tag,trading_symbol,symbol_token,exchange,side,product,quantity,limit_price,status) VALUES(${crypto.randomUUID()},${key},${account.id},${tag},${symbol},${token},${exchange},${side},${product},${fixed},${referencePrice},'SUBMITTING') ON CONFLICT(account_id,idempotency_key) DO NOTHING RETURNING id`;
    if(!saved.length){results.push({accountId:account.id,label:account.label,status:"DUPLICATE",message:"This Master order was already handled for this follower."});continue;}
    try{
+    await new Promise(resolve=>setTimeout(resolve,125)); // Pace order requests below Angel One's documented limit.
     const broker=await smartApiRequest<Record<string,unknown>>("/rest/secure/angelbroking/order/v1/placeOrder","POST",session,{variety:"NORMAL",tradingsymbol:symbol,symboltoken:token,transactiontype:side,exchange,ordertype:sourceType,producttype:product==="MIS"?"INTRADAY":"DELIVERY",duration:"DAY",price:sourceType==="LIMIT"?String(price):"0",quantity:String(fixed),disclosedquantity:"0",triggerprice:"0",squareoff:"0",stoploss:"0",ordertag:tag});
     const brokerOrderId=String(broker.orderid??broker.orderId??"");
     const uniqueId=String(broker.uniqueorderid??broker.uniqueOrderId??"");
