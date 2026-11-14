@@ -16,7 +16,7 @@ async function ensureCopyTables(sql:any){
  await sql`CREATE TABLE IF NOT EXISTS eagle_trades_copy_source_orders(master_order_id text PRIMARY KEY,source_payload jsonb NOT NULL,state text NOT NULL DEFAULT 'PENDING',lease_until timestamptz,created_at timestamptz NOT NULL DEFAULT now(),updated_at timestamptz NOT NULL DEFAULT now())`;
 }
 async function marketReference(session:any,exchange:string,symbol:string,token:string){
- const quote=await smartApiRequest<Record<string,unknown>>("/order-service/rest/secure/angelbroking/order/v1/getLtpData","POST",session,{exchange,tradingsymbol:symbol,symboltoken:token});
+ const quote=await smartApiRequest<Record<string,unknown>>("/rest/secure/angelbroking/order/v1/getLtpData","POST",session,{exchange,tradingsymbol:symbol,symboltoken:token});
  const price=Number(quote.ltp);if(!Number.isFinite(price)||price<=0)throw new Error("Angel One LTP unavailable; market copy blocked.");return price;
 }
 async function processSource(sql:any,source:Record<string,unknown>,followers:any[],limits:any){
@@ -107,7 +107,13 @@ export async function POST(request:NextRequest){
   const pending=[];
   for(const row of data as Array<Record<string,unknown>>){
    const id=String(row.orderid??"");if(!id)continue;
-   await sql`INSERT INTO eagle_trades_copy_source_orders(master_order_id,source_payload,state) VALUES(${id},${JSON.stringify(row)}::jsonb,'PENDING') ON CONFLICT(master_order_id) DO NOTHING`;
+   // Do not mirror a merely placed/open Master order. Wait until Angel One reports
+   // execution, and copy only the actually filled Master quantity as the source fact.
+   const status=String(row.orderstatus??row.status??"").toLowerCase().replaceAll("_"," ").trim();
+   const filled=Number(row.filledshares??row.filledShares??0);
+   if(!["complete","completed","filled"].includes(status)||!Number.isSafeInteger(filled)||filled<1)continue;
+   const executedSource={...row,quantity:String(filled)};
+   await sql`INSERT INTO eagle_trades_copy_source_orders(master_order_id,source_payload,state) VALUES(${id},${JSON.stringify(executedSource)}::jsonb,'PENDING') ON CONFLICT(master_order_id) DO NOTHING`;
    const claim=await sql`UPDATE eagle_trades_copy_source_orders SET state='PROCESSING',lease_until=now()+interval '60 seconds',updated_at=now() WHERE master_order_id=${id} AND (state='PENDING' OR (state='PROCESSING' AND lease_until<now())) RETURNING source_payload`;
    if(claim.length)pending.push(claim[0].source_payload as Record<string,unknown>);
   }
