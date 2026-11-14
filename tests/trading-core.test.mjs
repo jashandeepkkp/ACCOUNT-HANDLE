@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
-  normalizeCashEquity, searchCashEquities, validateInstrumentSelection,
+  normalizeCashEquity, searchCashEquities, validateInstrumentSelection, normalizeIndexOption, searchIndexOptionExpiries, searchIndexOptions, findVerifiedIndexOption, validateOptionLotQuantity,
   brokerProductType, evaluateRisk, isEligibleFollower, isOpenBrokerOrderStatus,
   normalizePlaceOrderResponse, makeCopyOrderTag, evaluateCopyMarketPrice
 } from "../lib/angel-one/trading-core.mjs";
@@ -84,3 +84,36 @@ test("market copy fails closed without valid fill price, LTP and slippage limit"
   assert.equal(evaluateCopyMarketPrice({ masterAveragePrice: 0, followerLtp: 100, maxDeviationBps: 50 }).allowed, false);
   assert.equal(evaluateCopyMarketPrice({ masterAveragePrice: 100, followerLtp: 100, maxDeviationBps: 0 }).allowed, false);
 });
+
+
+const indexOptions = [
+  { token:"99901", symbol:"NIFTY26NOV2025000CE", name:"NIFTY", expiry:"26NOV2026", strike:"2500000.000000", lotsize:"75", instrumenttype:"OPTIDX", exch_seg:"nse_fo", tick_size:"5.000000" },
+  { token:"99902", symbol:"NIFTY26NOV2025000PE", name:"NIFTY", expiry:"26NOV2026", strike:"2500000.000000", lotsize:"75", instrumenttype:"OPTIDX", exch_seg:"nse_fo", tick_size:"5.000000" },
+  { token:"99903", symbol:"SENSEX26NOV2025000CE", name:"SENSEX", expiry:"26NOV2026", strike:"2500000.000000", lotsize:"20", instrumenttype:"OPTIDX", exch_seg:"bse_fo", tick_size:"5.000000" },
+  { token:"99904", symbol:"RELIANCE26NOV1400CE", name:"RELIANCE", expiry:"26NOV2026", strike:"140000.000000", lotsize:"250", instrumenttype:"OPTSTK", exch_seg:"nse_fo", tick_size:"5.000000" }
+];
+
+test("index option master accepts only supported index OPTIDX CE/PE contracts", () => {
+  const nifty = normalizeIndexOption(indexOptions[0]);
+  assert.equal(nifty.exchange, "NFO");
+  assert.equal(nifty.underlying, "NIFTY");
+  assert.equal(nifty.strike, 25000);
+  assert.equal(nifty.optionType, "CE");
+  assert.equal(nifty.lotSize, 75);
+  assert.equal(normalizeIndexOption(indexOptions[3]), null);
+});
+
+test("index option search filters by underlying expiry and CE/PE", () => {
+  assert.deepEqual(searchIndexOptionExpiries(indexOptions, "NIFTY"), ["26NOV2026"]);
+  assert.equal(searchIndexOptions(indexOptions, { underlying:"NIFTY", expiry:"26NOV2026", optionType:"PE" })[0].token, "99902");
+  assert.equal(searchIndexOptions(indexOptions, { underlying:"SENSEX", expiry:"26NOV2026", optionType:"CE" })[0].exchange, "BFO");
+  assert.throws(() => findVerifiedIndexOption(indexOptions, "NFO", "NIFTY26NOV2025000CE", "99999"));
+});
+
+test("index option quantities must be whole contract lots", () => {
+  assert.equal(validateOptionLotQuantity(75, 75), true);
+  assert.equal(validateOptionLotQuantity(150, 75), true);
+  assert.equal(validateOptionLotQuantity(74, 75), false);
+  assert.equal(validateOptionLotQuantity(0, 75), false);
+});
+
