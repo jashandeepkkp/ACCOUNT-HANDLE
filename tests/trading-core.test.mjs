@@ -35,10 +35,10 @@ test("order selection must exactly match master symbol, exchange and token", () 
   assert.equal(validateInstrumentSelection({ exchange: "NSE", tradingSymbol: "SBIN-EQ", symbolToken: "1" }, instrument), false);
 });
 
-test("only supported cash products map to SmartAPI values", () => {
+test("supported cash and options products map to SmartAPI values", () => {
   assert.equal(brokerProductType("MIS"), "INTRADAY");
   assert.equal(brokerProductType("CNC"), "DELIVERY");
-  assert.equal(brokerProductType("NRML"), null);
+  assert.equal(brokerProductType("NRML"), "CARRYFORWARD");
 });
 
 test("risk limits fail closed for unknown P&L and reject breached limits", () => {
