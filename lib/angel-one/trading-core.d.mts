@@ -9,3 +9,4 @@ export function isEligibleFollower(account:any,now?:number):boolean;
 export function isOpenBrokerOrderStatus(value:unknown):boolean;
 export function normalizePlaceOrderResponse(payload:any):{orderId:string;uniqueOrderId:string;accepted:true;finalStatusKnown:false};
 export function makeCopyOrderTag(idempotencyKey:string,accountId:string):string;
+export function evaluateCopyMarketPrice(input:{masterAveragePrice:number;followerLtp:number;maxDeviationBps:number}):{allowed:boolean;reason?:string;deviationBps?:number};
