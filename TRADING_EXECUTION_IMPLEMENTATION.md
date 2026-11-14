@@ -52,7 +52,7 @@ Do not turn these on just to clear a dashboard warning. The application cannot c
 2. Verify actual Angel One RMS and position P&L payloads with redacted test responses; risk checks fail closed when the required realized P&L field is missing.
 3. Verify market-data endpoint availability and returned quote structure on the actual Render deployment.
 4. Complete a broker-approved paper/test environment exercise covering place, reject, partial fill, cancel, timeout and reconciliation.
-5. Implement and test the real follower-order dispatcher; this branch deliberately stops at follower preflight.
+5. The follower-order dispatcher is implemented behind the separate live-copy flag, but still requires controlled Angel One test-account validation, including partial fills, broker rejects, timeouts and follower reconciliation. A Render Cron Job must be created to poll it every minute.
 6. Add account-specific risk limits and concurrency-safe daily order reservation before enabling production live orders.
 7. Complete a security and compliance review and confirm the registered static IP.
 
