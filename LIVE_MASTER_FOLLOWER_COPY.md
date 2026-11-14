@@ -33,7 +33,9 @@ Do not copy secrets into GitHub or chat. Set them only in Render's encrypted env
 
 ## Continuous copy monitoring
 
-The endpoint is a poller, not a permanent websocket. For continuous monitoring, create a Render Cron Job that runs every minute after this branch is deployed:
+The endpoint is a poller, not a permanent websocket. This branch adds `scripts/copy-sync-cron.mjs` for a Render Cron Job. Create the job only after broker/static-IP approval and controlled test-account verification. Use the same repository and `main` branch, command `node scripts/copy-sync-cron.mjs`, and schedule `* * * * *` (every minute, UTC). Set `EAGLE_TRADES_URL` to the deployed HTTPS web-service URL and set `CRON_SECRET` to the same random secret (at least 24 characters) configured on the web service. Do not put secrets in source control. The cron runner calls the authenticated sync endpoint and exits non-zero if copy sync is disabled or fails. Render cron jobs run periodically and have a single-run guarantee; this polling design is delayed by up to the schedule interval plus broker/API latency.
+
+The endpoint can also be called manually for controlled verification. The cron runner command is:
 
 ```sh
 curl -fsS -X POST "$EAGLE_TRADES_URL/api/broker/copy/sync" \
@@ -47,7 +49,8 @@ Set `EAGLE_TRADES_URL` to the deployed service URL and `CRON_SECRET` to the same
 ## Important limitations / release gates
 
 1. This implementation covers NSE/BSE cash equities only. It does not copy F&O, MCX, GTT, bracket, cover, AMO or modify/cancel events as follower actions.
-2. Copy uses a configured fixed quantity per follower, not proportional sizing.
+2. Copy uses a configured fixed quantity per follower, not proportional sizing. Set `COPY_FIXED_QUANTITY` to a small test value first.
+3. Delayed MARKET-order copies require `COPY_MAX_PRICE_DEVIATION_BPS` (positive integer, maximum 5000). The follower's current LTP is compared with the Master's actual `averageprice`; if the difference exceeds the configured basis-point limit, the follower order is blocked. The value `0` disables MARKET-order copying. This does not eliminate execution slippage.
 3. Only new Master order IDs observed after the baseline are considered. Existing orders are never replayed.
 4. Master partial fills are not streamed as incremental follower quantity changes. A newly observed Master order is copied as a new follower order; the source order's later modifications are not mirrored.
 5. Follower submissions are independently recorded. A follower failure does not roll back already accepted orders at other brokers/accounts. Review each outcome and reconcile the follower order book.
