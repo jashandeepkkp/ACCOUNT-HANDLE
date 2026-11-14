@@ -380,3 +380,16 @@
 .trade-top-layout .trade-control-card p{font-size:9px;line-height:1.35;margin:0}
 @media(max-width:1050px){.trade-top-layout{grid-template-columns:1fr!important}.trade-top-layout>.trade-account-corner .master-login-widget{max-width:430px!important}}
 @media(max-width:760px){.trade-top-layout>.trade-control-rail{grid-template-columns:1fr!important}.trade-top-layout .trade-control-card{align-items:flex-start!important}.trade-top-layout .trade-actions{max-width:none!important;min-width:0!important;flex-direction:row!important;flex-wrap:wrap!important}.trade-top-layout .trade-actions button{flex:1 1 115px!important;min-height:36px!important;max-height:42px!important}.trade-top-layout>.trade-account-corner .master-login-widget{max-width:none!important}}
+
+
+/* Master-to-Follower execution outcome notifications */
+.copy-result-banner{margin-top:12px;padding:11px 13px;border-radius:6px;font-size:12px;font-weight:800;letter-spacing:.1px}
+.copy-all-filled{background:#e8f7ef;color:#167b4d;border:1px solid #a8dfc0}
+.copy-has-issues{background:#fff5e7;color:#9b5b0a;border:1px solid #f0d2a5}
+.copy-pending{background:#edf3ff;color:#3866b0;border:1px solid #c7d8fa}
+.copy-account-results{display:grid;gap:7px;margin-top:9px}
+.copy-account-result{display:grid;grid-template-columns:minmax(120px,1fr) minmax(90px,auto) minmax(180px,1.5fr);align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.copy-account-result b{font-size:11px}
+.copy-account-result span{font-size:10px;font-weight:900;color:var(--muted)}
+.copy-account-result small{font:10px 'IBM Plex Mono',monospace;color:var(--muted);text-align:right;overflow-wrap:anywhere}
+@media(max-width:600px){.copy-account-result{grid-template-columns:1fr auto;gap:5px}.copy-account-result small{grid-column:1/-1;text-align:left}}
