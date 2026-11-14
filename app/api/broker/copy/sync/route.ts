@@ -5,6 +5,8 @@ import {openSession} from "@/lib/angel-one/session";
 import {smartApiRequest} from "@/lib/angel-one/smartapi";
 import {liveDb,liveConfigReady} from "@/lib/angel-one/live-trading";
 import {findVerifiedInstrument} from "@/lib/angel-one/instrument-master";
+import {findVerifiedIndexOption} from "@/lib/angel-one/index-options";
+import {validateOptionLotQuantity} from "@/lib/angel-one/trading-core.mjs";
 import {evaluateRisk,evaluateCopyMarketPrice,isEligibleFollower,makeCopyOrderTag} from "@/lib/angel-one/trading-core.mjs";
 export const runtime="nodejs";export const dynamic="force-dynamic";
 function sameOrigin(r:NextRequest){const o=r.headers.get("origin"),h=r.headers.get("x-forwarded-host")??r.headers.get("host");try{return Boolean(o&&h&&new URL(o).host===h)}catch{return false}}
@@ -27,13 +29,15 @@ async function processSource(sql:any,source:Record<string,unknown>,followers:any
  const side=String(source.transactiontype??"").toUpperCase();
  const sourceType=String(source.ordertype??"").toUpperCase();
  const rawProduct=String(source.producttype??"").toUpperCase();
- const product=rawProduct==="INTRADAY"||rawProduct==="MIS"?"MIS":rawProduct==="DELIVERY"||rawProduct==="CNC"?"CNC":null;
- if(!masterOrderId||!["NSE","BSE"].includes(exchange)||!["BUY","SELL"].includes(side)||!product||!["MARKET","LIMIT"].includes(sourceType))return [{masterOrderId,status:"SKIPPED",reason:"Unsupported master order type, exchange, side or product."}];
+ const isOption=exchange==="NFO"||exchange==="BFO";
+ const product=rawProduct==="INTRADAY"||rawProduct==="MIS"?"MIS":rawProduct==="DELIVERY"||rawProduct==="CNC"?"CNC":rawProduct==="CARRYFORWARD"||rawProduct==="NRML"?"NRML":null;
+ if(!masterOrderId||!["NSE","BSE","NFO","BFO"].includes(exchange)||!["BUY","SELL"].includes(side)||!product||!["MARKET","LIMIT"].includes(sourceType)||(isOption&&(product!=="MIS"&&product!=="NRML"))||(!isOption&&product==="NRML"))return [{masterOrderId,status:"SKIPPED",reason:"Unsupported master order type, exchange, side or product."}];
  const status=String(source.orderstatus??source.status??"").toLowerCase().replaceAll("_"," ");
  if(["rejected","cancelled","canceled"].includes(status))return [{masterOrderId,status:"SKIPPED",reason:"Master order was rejected or cancelled."}];
- const instrument=await findVerifiedInstrument(exchange,symbol,token);
+ const instrument=isOption?await findVerifiedIndexOption(exchange,symbol,token):await findVerifiedInstrument(exchange,symbol,token);
  const fixed=Number(process.env.COPY_FIXED_QUANTITY);
  if(!Number.isSafeInteger(fixed)||fixed<1)throw new Error("COPY_FIXED_QUANTITY must be a positive integer.");
+ if(isOption&&!validateOptionLotQuantity(fixed,instrument.lotSize))throw new Error("COPY_FIXED_QUANTITY must be a multiple of the option contract lot size ("+instrument.lotSize+").");
  const results=[];
  for(const account of followers){
   const key="COPY:"+masterOrderId+":"+account.id;
@@ -64,7 +68,7 @@ async function processSource(sql:any,source:Record<string,unknown>,followers:any
    if(!saved.length){results.push({accountId:account.id,label:account.label,status:"DUPLICATE",message:"This Master order was already handled for this follower."});continue;}
    try{
     await new Promise(resolve=>setTimeout(resolve,125)); // Pace order requests below Angel One's documented limit.
-    const broker=await smartApiRequest<Record<string,unknown>>("/rest/secure/angelbroking/order/v1/placeOrder","POST",session,{variety:"NORMAL",tradingsymbol:symbol,symboltoken:token,transactiontype:side,exchange,ordertype:sourceType,producttype:product==="MIS"?"INTRADAY":"DELIVERY",duration:"DAY",price:sourceType==="LIMIT"?String(price):"0",quantity:String(fixed),disclosedquantity:"0",triggerprice:"0",squareoff:"0",stoploss:"0",ordertag:tag});
+    const broker=await smartApiRequest<Record<string,unknown>>("/rest/secure/angelbroking/order/v1/placeOrder","POST",session,{variety:"NORMAL",tradingsymbol:symbol,symboltoken:token,transactiontype:side,exchange,ordertype:sourceType,producttype:product==="MIS"?"INTRADAY":product==="NRML"?"CARRYFORWARD":"DELIVERY",duration:"DAY",price:sourceType==="LIMIT"?String(price):"0",quantity:String(fixed),disclosedquantity:"0",triggerprice:"0",squareoff:"0",stoploss:"0",ordertag:tag});
     const brokerOrderId=String(broker.orderid??broker.orderId??"");
     const uniqueId=String(broker.uniqueorderid??broker.uniqueOrderId??"");
     if(!brokerOrderId)throw new Error("Broker acknowledgement omitted order ID; outcome uncertain.");
