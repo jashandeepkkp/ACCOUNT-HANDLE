@@ -206,3 +206,18 @@
 .broker-safety-list .pending{color:var(--red)}
 .broker-safety-panel>strong{font-size:10px;letter-spacing:.8px;color:var(--red)}
 @media(max-width:600px){.broker-safety-list{grid-template-columns:1fr}}
+
+
+/* Master account funds and live running P&L inside the Manual Trading ticket */
+.master-funds-panel{margin:12px 0 16px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.master-funds-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px}
+.master-funds-heading>div{display:flex;flex-direction:column;gap:3px}
+.master-funds-heading>div>b{font-size:10px;letter-spacing:.7px}
+.master-funds-heading button{width:28px;height:26px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)}
+.master-funds-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.master-funds-metrics>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.master-funds-metrics small{font-size:8px;color:var(--muted);letter-spacing:.5px}
+.master-funds-metrics strong{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.master-funds-updated,.master-funds-error{font-size:9px;line-height:1.4;color:var(--muted);margin:9px 0 0}
+.master-funds-error{color:var(--red)}
+@media(max-width:420px){.master-funds-metrics{grid-template-columns:1fr 1fr}.master-funds-metrics strong{font-size:12px}}

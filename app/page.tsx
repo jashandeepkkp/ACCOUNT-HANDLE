@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import AngelOneMasterLogin from "@/components/AngelOneMasterLogin";
 import ConnectedFollowerAccounts from "@/components/ConnectedFollowerAccounts";
+import MasterAccountFunds from "@/components/MasterAccountFunds";
 
 import { useCloudState } from "@/lib/neon/use-cloud-state";
 
@@ -90,6 +91,7 @@ export default function Home(){
    <div className="chart-disclaimer">TradingView chart data is for market viewing only. It does not place orders or guarantee real-time exchange quotes. Confirm live prices with your broker before trading.</div>
   </section><section className="card manual-trade">
    <div className="trade-head"><div><div className="eyebrow">ORDER ENTRY / MASTER ACCOUNT</div><h2>Manual Trading</h2><p>Place a simulated order from the master account. Live broker execution is not connected.</p></div><span className="paper-pill">PAPER MODE</span></div>
+   <MasterAccountFunds/>
    <div className="trade-grid">
     <div className="trade-field"><span>Trading account</span><strong>MASTER ACCOUNT · ANGEL ONE</strong><small>Only the currently authenticated Master account is used here.</small></div>
     <label className="trade-field">Exchange<select value={tradeExchange} onChange={e=>setTradeExchange(e.target.value)}><option>NSE</option><option>BSE</option><option>NFO</option><option>BFO</option><option>MCX</option></select></label>
