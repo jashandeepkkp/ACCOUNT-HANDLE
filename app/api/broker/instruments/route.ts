@@ -1,0 +1,5 @@
+import {NextRequest,NextResponse} from "next/server";
+import {getSession} from "@/lib/server/session";
+import {searchInstruments,instrumentMasterLoadedAt} from "@/lib/angel-one/instrument-master";
+export const runtime="nodejs";export const dynamic="force-dynamic";
+export async function GET(request:NextRequest){if(!await getSession())return NextResponse.json({error:"Application login required."},{status:401});const q=request.nextUrl.searchParams.get("q")??"",exchange=request.nextUrl.searchParams.get("exchange")??"NSE";if(!["NSE","BSE"].includes(exchange))return NextResponse.json({error:"Only NSE and BSE cash equities are supported."},{status:400});if(q.trim().length<2)return NextResponse.json({instruments:[]});try{const instruments=await searchInstruments(exchange,q);return NextResponse.json({instruments,source:"Angel One OpenAPI instrument master",loadedAt:new Date(instrumentMasterLoadedAt()??Date.now()).toISOString()},{headers:{"Cache-Control":"no-store"}});}catch(e){return NextResponse.json({error:e instanceof Error?e.message:"Instrument lookup failed."},{status:503});}}
