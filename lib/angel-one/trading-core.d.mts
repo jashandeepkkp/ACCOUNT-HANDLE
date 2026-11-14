@@ -1,0 +1,11 @@
+export type CashEquityInstrument={exchange:"NSE"|"BSE";symbol:string;token:string;name:string;tickSize:number;lotSize:number};
+export function normalizeExchangeSegment(value:unknown):"NSE"|"BSE"|null;
+export function normalizeCashEquity(row:unknown):CashEquityInstrument|null;
+export function searchCashEquities(rows:unknown[],query:string,exchange:string):CashEquityInstrument[];
+export function validateInstrumentSelection(selection:{exchange:string;tradingSymbol:string;symbolToken:string},instrument:CashEquityInstrument|null):boolean;
+export function brokerProductType(product:string):"INTRADAY"|"DELIVERY"|null;
+export function evaluateRisk(input:{quantity:number;price:number;maxQuantity:number;maxNotional:number;dailyOrderCount:number;maxDailyOrders:number;dailyPnl:number;maxDailyLoss:number}):{allowed:boolean;reason?:string;notional?:number};
+export function isEligibleFollower(account:any,now?:number):boolean;
+export function isOpenBrokerOrderStatus(value:unknown):boolean;
+export function normalizePlaceOrderResponse(payload:any):{orderId:string;uniqueOrderId:string;accepted:true;finalStatusKnown:false};
+export function makeCopyOrderTag(idempotencyKey:string,accountId:string):string;
