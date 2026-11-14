@@ -10,3 +10,10 @@ export function isOpenBrokerOrderStatus(value:unknown):boolean;
 export function normalizePlaceOrderResponse(payload:any):{orderId:string;uniqueOrderId:string;accepted:true;finalStatusKnown:false};
 export function makeCopyOrderTag(idempotencyKey:string,accountId:string):string;
 export function evaluateCopyMarketPrice(input:{masterAveragePrice:number;followerLtp:number;maxDeviationBps:number}):{allowed:boolean;reason?:string;deviationBps?:number};
+
+export type IndexOptionInstrument={exchange:"NFO"|"BFO";symbol:string;token:string;name:string;underlying:"NIFTY"|"BANKNIFTY"|"FINNIFTY"|"SENSEX";expiry:string;strike:number;optionType:"CE"|"PE";lotSize:number;tickSize:number};
+export function normalizeIndexOption(row:unknown):IndexOptionInstrument|null;
+export function searchIndexOptionExpiries(rows:unknown[],underlying:string):string[];
+export function searchIndexOptions(rows:unknown[],filters:{underlying:string;expiry:string;optionType:string}):IndexOptionInstrument[];
+export function findVerifiedIndexOption(rows:unknown[],exchange:string,symbol:string,token:string):IndexOptionInstrument;
+export function validateOptionLotQuantity(quantity:number,lotSize:number):boolean;
