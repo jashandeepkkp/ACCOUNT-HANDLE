@@ -12,8 +12,10 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [activeUser, setActiveUser] = useState("");
+  const [isFollowerPage, setIsFollowerPage] = useState(false);
 
   useEffect(() => {
+    if (window.location.pathname === "/follower-connect") { setIsFollowerPage(true); return; }
     let active = true;
     fetch("/api/auth/session", { cache: "no-store", credentials: "same-origin" })
       .then(async response => response.ok ? response.json() : null)
@@ -53,6 +55,8 @@ export default function AuthGate({ children }: { children: ReactNode }) {
     setMessage("");
     setBusy(false);
   }
+
+  if (isFollowerPage) return <>{children}</>;
 
   if (status === "checking") return <main className="login-screen"><div className="login-card"><div className="login-brand">EAGLE <span>TRADES</span></div><p>Checking secure session…</p></div></main>;
 

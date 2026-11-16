@@ -84,3 +84,15 @@ export function accountSession(account: StoredBrokerAccount, open: (value: strin
   if (!session || session.expiresAt <= Date.now()) return null;
   return session;
 }
+
+export async function recordFollowerConsent(followerId: string) {
+  const sql = await ensureBrokerAccountsTable();
+  await sql`CREATE TABLE IF NOT EXISTS eagle_trades_follower_consents (
+    follower_id text PRIMARY KEY,
+    consent_version text NOT NULL,
+    consented_at timestamptz NOT NULL DEFAULT now()
+  )`;
+  await sql`INSERT INTO eagle_trades_follower_consents (follower_id, consent_version, consented_at)
+    VALUES (${followerId}, 'follower-connect-v1', now())
+    ON CONFLICT (follower_id) DO UPDATE SET consent_version = EXCLUDED.consent_version, consented_at = now()`;
+}
