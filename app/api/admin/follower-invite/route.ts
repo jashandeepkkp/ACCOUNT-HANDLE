@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { getSession } from "@/lib/server/session";
 import { ensureTradingStateTable } from "@/lib/server/neon";
 import { listBrokerAccounts } from "@/lib/angel-one/account-store";
