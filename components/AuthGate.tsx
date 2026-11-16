@@ -5,6 +5,15 @@ import type { FormEvent, ReactNode } from "react";
 
 type AuthStatus = "checking" | "signed-out" | "signed-in";
 
+function AdminLoginBackground() {
+  return <>
+    <video className="admin-login-background-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" tabIndex={-1}>
+      <source src="https://media.istockphoto.com/id/2240790890/video/moving-financial-chart-investing-chart-investment-in-crypto-data-lines-indicating-a-point-of.mp4?s=mp4-640x640-is&k=20&c=pDK06y_5Ex2RauI4ZT_4CygO2XzjkRE0mFkBU6hGv_c=" type="video/mp4" />
+    </video>
+    <div className="admin-login-video-overlay" aria-hidden="true" />
+  </>;
+}
+
 export default function AuthGate({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>("checking");
   const [username, setUsername] = useState("");
@@ -58,10 +67,11 @@ export default function AuthGate({ children }: { children: ReactNode }) {
 
   if (isFollowerPage) return <>{children}</>;
 
-  if (status === "checking") return <main className="login-screen"><div className="login-card"><div className="login-brand">EAGLE <span>TRADES</span></div><p>Checking secure session…</p></div></main>;
+  if (status === "checking") return <main className="login-screen"><AdminLoginBackground /><div className="login-card"><div className="login-brand">EAGLE <span>TRADES</span></div><p>Checking secure session…</p></div></main>;
 
   if (status === "signed-out") return (
     <main className="login-screen">
+      <AdminLoginBackground />
       <section className="login-card">
         <div className="login-emblem">E</div>
         <div className="login-brand">EAGLE <span>TRADES</span></div>
