@@ -393,3 +393,11 @@
 .copy-account-result span{font-size:10px;font-weight:900;color:var(--muted)}
 .copy-account-result small{font:10px 'IBM Plex Mono',monospace;color:var(--muted);text-align:right;overflow-wrap:anywhere}
 @media(max-width:600px){.copy-account-result{grid-template-columns:1fr auto;gap:5px}.copy-account-result small{grid-column:1/-1;text-align:left}}
+
+
+/* Admin login financial chart video background */
+.login-screen{position:relative;isolation:isolate;overflow:hidden;background:#080f1c}
+.admin-login-background-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2;pointer-events:none}
+.admin-login-video-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(4,10,20,.88),rgba(7,17,31,.68) 52%,rgba(3,10,20,.86))}
+.login-card{position:relative;z-index:1;background:rgba(15,25,39,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:#52647b80}
+@media(prefers-reduced-motion:reduce){.admin-login-background-video{display:none}}
