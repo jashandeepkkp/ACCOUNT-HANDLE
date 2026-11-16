@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const session = { jwtToken: payload.data.jwtToken, refreshToken: payload.data.refreshToken, feedToken: payload.data.feedToken, clientCode, expiresAt };
     await smartApiRequest<Record<string, unknown>>("/rest/secure/angelbroking/user/v1/getProfile", "GET", session);
     const followerId = randomBytes(16).toString("hex");
-    const brokerApproved = process.env.ANGELONE_ACCOUNT_AUTHORIZED === "true";
+    const brokerApproved = false;
     await saveBrokerAccount({ id: followerId, role: "FOLLOWER", label: "Follower " + followerId.slice(0, 6), clientCode, encryptedSession: sealSession(session), expiresAt, authorizedForCopy: brokerApproved });
     await recordFollowerConsent(followerId);
     const token = await createFollowerSession(followerId);
