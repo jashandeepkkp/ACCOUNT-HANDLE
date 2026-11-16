@@ -45,6 +45,19 @@ export default function FollowerConnectPage() {
   }
 
   return <main className="follower-connect-page">
+    <video
+      className="follower-connect-background-video"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      aria-hidden="true"
+      tabIndex={-1}
+    >
+      <source src="https://media.istockphoto.com/id/2255031452/video/fluctuations-in-revenue-and-expenditure-in-corporate-financial-statements-analysis-of.mp4?s=mp4-640x640-is&k=20&c=vQFriawS51IqlAcqTbckO7yYyZJZpCJ7ipw6iRx97Y8=" type="video/mp4" />
+    </video>
+    <div className="follower-connect-video-overlay" aria-hidden="true" />
     <section className="follower-connect-card">
       <div className="follower-connect-brand">EAGLE <span>TRADES</span></div>
       <div className="follower-connect-eyebrow">SECURE FOLLOWER ONBOARDING</div>
@@ -68,19 +81,22 @@ export default function FollowerConnectPage() {
       <footer>Never share your PIN or TOTP with anyone. EAGLE TRADES Admin cannot view these credentials.</footer>
     </section>
     <style jsx>{`
-      .follower-connect-page{min-height:100vh;display:grid;place-items:center;padding:28px 16px;background:#080f1c;color:#e8eef8;font-family:Arial,sans-serif}
-      .follower-connect-card{width:min(100%,480px);padding:32px;border:1px solid #26364d;border-radius:18px;background:#101c2d;box-shadow:0 24px 80px #0006}
+      .follower-connect-page{min-height:100vh;position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;padding:28px 16px;background:#080f1c;color:#e8eef8;font-family:Arial,sans-serif}
+      .follower-connect-background-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2;pointer-events:none}
+      .follower-connect-video-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(4,10,20,.88),rgba(7,17,31,.70) 52%,rgba(3,10,20,.86))}
+      .follower-connect-card{position:relative;z-index:1;width:min(100%,480px);padding:32px;border:1px solid #52647b80;border-radius:18px;background:rgba(12,25,42,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 24px 80px #0009}
       .follower-connect-brand{font-size:19px;font-weight:900;letter-spacing:2px;margin-bottom:28px}.follower-connect-brand span{color:#42c5a5}
       .follower-connect-eyebrow{font-size:10px;letter-spacing:2px;color:#8ca5c2;font-weight:700}
-      h1{font-size:30px;margin:8px 0}.follower-connect-intro{color:#9fb0c5;line-height:1.55;margin-bottom:26px}
-      form{display:grid;gap:16px}label{display:grid;gap:7px;font-size:12px;color:#b7c6d9;font-weight:700}
-      input:not([type=checkbox]){width:100%;box-sizing:border-box;padding:13px;border:1px solid #34465f;border-radius:9px;background:#0a1422;color:#fff;font-size:15px}
+      h1{font-size:30px;margin:8px 0}.follower-connect-intro{color:#c0ccda;line-height:1.55;margin-bottom:26px}
+      form{display:grid;gap:16px}label{display:grid;gap:7px;font-size:12px;color:#d0dbea;font-weight:700}
+      input:not([type=checkbox]){width:100%;box-sizing:border-box;padding:13px;border:1px solid #52647b;border-radius:9px;background:rgba(5,14,26,.88);color:#fff;font-size:15px}
       .follower-connect-consent{display:flex;align-items:flex-start;gap:9px;line-height:1.5;font-weight:400}.follower-connect-consent input{margin-top:3px}
       button{border:0;border-radius:9px;padding:14px;background:#20a98a;color:#061710;font-weight:900;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
       .follower-connect-status{color:#4ad6ac;font-size:12px;font-weight:900;letter-spacing:1px}.follower-connected-state h2{font-size:20px}
-      .follower-connected-state p,.follower-connect-safety{color:#a8b9ce;line-height:1.5}.follower-connect-error{padding:14px;border:1px solid #76513b;border-radius:9px;color:#f1c19a}
-      .follower-connect-message{margin-top:16px;color:#b7e6d7;line-height:1.5}.follower-connect-card footer{margin-top:24px;color:#71849d;font-size:11px;line-height:1.5}
-      @media(max-width:520px){.follower-connect-card{padding:24px 18px}}
+      .follower-connected-state p,.follower-connect-safety{color:#c0ccda;line-height:1.5}.follower-connect-error{padding:14px;border:1px solid #76513b;border-radius:9px;color:#f1c19a;background:rgba(20,20,24,.45)}
+      .follower-connect-message{margin-top:16px;color:#b7e6d7;line-height:1.5}.follower-connect-card footer{margin-top:24px;color:#a3b3c7;font-size:11px;line-height:1.5}
+      @media(max-width:520px){.follower-connect-card{padding:24px 18px}.follower-connect-background-video{object-position:58% center}}
+      @media(prefers-reduced-motion:reduce){.follower-connect-background-video{display:none}}
     `}</style>
   </main>;
 }
