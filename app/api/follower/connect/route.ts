@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok || !payload?.status || !payload.data?.jwtToken || !payload.data.refreshToken || !payload.data.feedToken) return NextResponse.json({ error: payload?.message || "Angel One authentication failed.", code: payload?.errorcode || "AUTH_FAILED" }, { status: 401 });
     const expiresAt = sessionExpiry();
     const session = { jwtToken: payload.data.jwtToken, refreshToken: payload.data.refreshToken, feedToken: payload.data.feedToken, clientCode, expiresAt };
-    const profile = await smartApiRequest<Record<string, unknown>>("/rest/secure/angelbroking/user/v1/getProfile", "GET", session);
+    await smartApiRequest<Record<string, unknown>>("/rest/secure/angelbroking/user/v1/getProfile", "GET", session);
     const followerId = randomBytes(16).toString("hex");
     const brokerApproved = process.env.ANGELONE_ACCOUNT_AUTHORIZED === "true";
     await saveBrokerAccount({ id: followerId, role: "FOLLOWER", label: "Follower " + followerId.slice(0, 6), clientCode, encryptedSession: sealSession(session), expiresAt, authorizedForCopy: brokerApproved });
